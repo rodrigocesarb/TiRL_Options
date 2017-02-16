@@ -84,14 +84,14 @@ public class BasicBehavior<idx> {
 	static OOSADomain domain2; // Dominio com 1 recompensa - Objetivo 2 sem options
 	static OOSADomain domain3; // Dominio com 2 recompensas
 	static OOSADomain domain4; // Dominio com 2 recompensas e muros diferentes
-	TerminalFunction tf;
+	static TerminalFunction tf;
 	static StateConditionTest goalCondition;
-	State initialState;
+	static State initialState;
 
 
-	HashableStateFactory hashingFactory;
-	SimulatedEnvironment env;
-	SimulatedEnvironment env2;
+	static HashableStateFactory hashingFactory;
+	static SimulatedEnvironment env;
+	static SimulatedEnvironment env2;
 	int npoliticas = 5; //quantidade de politicas otimas geradas(L ou SP)
 
 
@@ -109,10 +109,10 @@ public class BasicBehavior<idx> {
 	int maiorScoreExp2 = 0;
 
 	//parametros objetivo 1
-	public boolean objetivo1 = true;
+	public static boolean objetivo1 = true;
 
 	//parametros objetivo 2
-	public boolean objetivo2 = false;
+	public static boolean objetivo2 = false;
 
 	public boolean controleBreakpoint = false;
 
@@ -133,29 +133,217 @@ public class BasicBehavior<idx> {
 	static int qtdExperimentos = 10;
 	static int mapa = 0;
 
-	boolean mapa1 = true;
-	boolean mapa2 = false;
-	boolean mapa3 = false;
-	boolean mapa4 = false;
-	boolean mapa5 = false;
-	boolean mapa6 = false;
+	static int controleMapa = 1;
+
+	static boolean mapa1 = true;
+	static boolean mapa2 = true;
+	static boolean mapa3 = true;
+	static boolean mapa4 = true;
+	static boolean mapa5 = true;
+	static boolean mapa6 = true;
 
 	Hashtable<HashableState, Action> condicaoInicial = new Hashtable<HashableState, Action>();
 
 
 	//construtor para Objetivo visando a criaçao do dominio usado para gerar as politicas otimas iniciais
 	public BasicBehavior(){
-		GridGold[] golds = createGolds(); //parametro interno controla quantos ouros serao criados
 
-		GridAgent2 agente;
-		agente = createAgent();
 
 		//		GridAgent2 agente = createVariousAgent();
 
 		//		initialState = new GridWorldState2(new GridAgent2(0, 0), new GridLocation2[]{new GridLocation2(10, 10, "loc0")},golds);
 
+
+
+		//codigo para visualizar o experimento2
+		//						VisualActionObserver observer2 = new VisualActionObserver(domain2, 
+		//								GridWorldVisualizer2.getVisualizer(gwdg.getMap()));
+		//						observer2.initGUI();
+		//						env.addObservers(observer2);
+
+		//codigo para visualizar o experimento3
+		//		VisualActionObserver observer3 = new VisualActionObserver(domain3, 
+		//				GridWorldVisualizer2.getVisualizer(gwdg.getMap()));
+		//		observer3.initGUI();
+		//		env.addObservers(observer3);
+
+
+		//codigo para visualizar o experimento4
+		//		VisualActionObserver observer4 = new VisualActionObserver(domain4, 
+		//				GridWorldVisualizer2.getVisualizer(gwdg2.getMap()));
+		//		observer4.initGUI();
+		//		env2.addObservers(observer4);
+	}
+
+
+	public static void main(String[] args) throws IOException {
+
+		int qtdMapas = 6;
+		
+		while(controleMapa <= qtdMapas){
+			criaExperimento();
+			//BasicBehavior qLearningExample2 = new BasicBehavior();
+
+			//		BasicBehavior qLearningGreedy = new BasicBehavior();
+			//		String outputPath = "output/";
+
+
+			//codigo para visualizar o experimento1
+//			VisualActionObserver observer1 = new VisualActionObserver(domain1, 
+//					GridWorldVisualizer2.getVisualizer(gwdg.getMap()));
+//			observer1.initGUI();
+//			env.addObservers(observer1);
+
+
+
+			String outputPath = "output/"; // directory to record results
+			String outputPath2 = "output2/";
+			String outputPath3 = "output3/";
+			String outputPath4 = "output4/";
+
+			boolean visualizarExperimento = false;
+
+
+			//rodando com as options descobertas só para objetivo 1(caminho - qtd de steps)
+			if(experimento1){
+
+				String outputPathTeste = "output1";
+
+				BasicBehavior qLearningExample = new BasicBehavior();
+
+				//roda q-learning para extrair as options com policyblocks
+				List<Option> opt1 = qLearningExample.rodaExperimento(1);	
+
+				//salvar as options aprendidas
+				int contaOption = 1;
+				for(Option opt :opt1){
+					((MOOption) opt).salvaArquivo("/home/lti/experimento/test"+contaOption+" mapa"+mapa+".csv");
+					contaOption++;
+				}
+
+
+
+
+
+
+
+				//ler as options aprendidas
+				//			for(Option opt :opt1){
+				//				((MOOption) opt).carregaArquivo("/home/lti/experimento/test"+contaOption+".csv");
+				//				contaOption++;
+				//			}
+
+
+				//roda experimento sem option
+				//qLearningExample.rodarExperimentoSemAprenderOption(qLearningExample.domain1,false,1); //dominio, true = comOptions e false = semOptions, numero do experimento
+
+				//adiciona as options no dominio
+				//qLearningExample.domain1.addActionTypes(getActionTypesFromOption(opt1));
+
+				//roda experimento com options aprendidas
+				qLearningExample.rodarExperimentoSemAprenderOption(qLearningExample.domain1,true,1);
+				//
+//				if(visualizarExperimento){
+//					qLearningExample.visualize(outputPath);
+//				}
+				//						contadorExperimentos++;
+			}
+			controleMapa++;
+		}
+
+
+			//rodando com as options descobertas no gold mine
+			if(experimento2){
+				BasicBehavior qLearningExample2 = new BasicBehavior();
+
+				//roda q-learning para extrair as options com policyblocks
+				List<Option> opt2 = qLearningExample2.rodaExperimento(2);
+
+				//roda experimento sem option
+				qLearningExample2.rodarExperimentoSemAprenderOption(qLearningExample2.domain2,false,2);
+
+				//adiciona as options no dominio
+				qLearningExample2.domain2.addActionTypes(getActionTypesFromOption(opt2));
+
+
+				qLearningExample2.rodarExperimentoSemAprenderOption(qLearningExample2.domain2,true,2);
+
+				//									if(visualizarExperimento){
+				//										qLearningExample2.visualize(outputPath2);
+				//									}
+			}
+
+			//rodando com as 2 options descobertas nos 2 dominios
+			if(experimento3){
+				BasicBehavior qLearningExample3 = new BasicBehavior();
+				//roda q-learning para extrair as options com policyblocks
+				List<Option> opt1 = qLearningExample3.rodaExperimento(1);
+				//roda q-learning para extrair as options com policyblocks
+				List<Option> opt2 = qLearningExample3.rodaExperimento(2);
+
+				//roda experimento sem option
+				qLearningExample3.rodarExperimentoSemAprenderOption(qLearningExample3.domain3,false,3);
+
+				//adiciona as options no dominio
+				qLearningExample3.domain3.addActionTypes(getActionTypesFromOption(opt1));
+				//adiciona as options no dominio
+				qLearningExample3.domain3.addActionTypes(getActionTypesFromOption(opt2));
+
+				//roda experimento com option
+				qLearningExample3.rodarExperimentoSemAprenderOption(qLearningExample3.domain3,true,3);
+
+				//			if(visualizarExperimento){
+				//				qLearningExample3.visualize(outputPath3);
+				//			}
+			}
+
+
+			//rodando com options aprendidas nos dos 2 dominios e transfer learning para um dominio com muros diferentes
+			if(experimento4){
+
+				agenteRandom = false;
+
+				BasicBehavior qLearningExample4 = new BasicBehavior();
+
+				//cria o agente randomicamente ou no 0,0
+				//qLearningExample4.createAgent();
+
+				//descobre as options no 1o dominio single objective
+				List<Option> opt1 = qLearningExample4.rodaExperimento(1);
+				//descobre as options no 1o dominio single objective
+				List<Option> opt2 = qLearningExample4.rodaExperimento(2);
+
+				//aprendendo as options no dominio 3(com objetivos 1 e 2)
+				qLearningExample4.rodarExperimentoSemAprenderOption(qLearningExample4.domain3,false,3);
+
+				//adicionando as options no dominio 4
+				qLearningExample4.domain4.addActionTypes(getActionTypesFromOption(opt1));
+				//adicionando as options no dominio 4
+				qLearningExample4.domain4.addActionTypes(getActionTypesFromOption(opt2));
+
+				//parametro pra controle de execuçao do dominio 4
+				dominio4Rodar = true;
+				//mudar os muros 1x antes de rodar de novo com as options aprendidas
+				qLearningExample4.rodarExperimentoSemAprenderOption(qLearningExample4.domain4,true,3);
+				//
+				//			if(visualizarExperimento){
+				//				qLearningExample4.visualize(outputPath4);
+				//			}
+			}
+		
+	}
+	
+	
+	public static void criaExperimento(){
+		GridGold[] golds = createGolds(); //parametro interno controla quantos ouros serao criados
+
+		GridAgent2 agente;
+		agente = createAgent();
+
+
+
 		if(experimento1){
-			if(mapa1){
+			if(mapa1 && controleMapa == 1){
 				mapa = 1;
 				initialState = new GridWorldState2(agente, new GridLocation2[]{new GridLocation2(10, 10, "loc0")},golds); //location eh onde fica o objetivo
 				hashingFactory = new SimpleHashableStateFactory();
@@ -164,7 +352,7 @@ public class BasicBehavior<idx> {
 			}
 
 
-			if(mapa2){
+			if(mapa2 && controleMapa == 2){
 				mapa = 2;
 				initialState = new GridWorldState2(agente, new GridLocation2[]{new GridLocation2(0, 7, "loc0")},golds); //location eh onde fica o objetivo
 				hashingFactory = new SimpleHashableStateFactory();
@@ -173,7 +361,7 @@ public class BasicBehavior<idx> {
 			}
 
 
-			if(mapa3){
+			if(mapa3 && controleMapa == 3){
 				mapa = 3;
 				initialState = new GridWorldState2(agente, new GridLocation2[]{new GridLocation2(10,6, "loc0")},golds); //location eh onde fica o objetivo
 				hashingFactory = new SimpleHashableStateFactory();
@@ -181,7 +369,7 @@ public class BasicBehavior<idx> {
 				goalCondition = new TFGoalCondition(tf);
 			}
 
-			if(mapa4){
+			if(mapa4 && controleMapa == 4){
 				mapa = 4;
 				initialState = new GridWorldState2(agente, new GridLocation2[]{new GridLocation2(7,0, "loc0")},golds); //location eh onde fica o objetivo
 				hashingFactory = new SimpleHashableStateFactory();
@@ -189,7 +377,7 @@ public class BasicBehavior<idx> {
 				goalCondition = new TFGoalCondition(tf);
 			}
 
-			if(mapa5){
+			if(mapa5 && controleMapa == 5){
 				mapa = 5;
 				initialState = new GridWorldState2(agente, new GridLocation2[]{new GridLocation2(0, 10, "loc0")},golds); //location eh onde fica o objetivo
 				hashingFactory = new SimpleHashableStateFactory();
@@ -197,7 +385,7 @@ public class BasicBehavior<idx> {
 				goalCondition = new TFGoalCondition(tf);
 			}
 
-			if(mapa6){
+			if(mapa6 && controleMapa == 6){
 				mapa = 6;
 				initialState = new GridWorldState2(agente, new GridLocation2[]{new GridLocation2(3,0, "loc0")},golds); //location eh onde fica o objetivo
 				hashingFactory = new SimpleHashableStateFactory();
@@ -225,7 +413,7 @@ public class BasicBehavior<idx> {
 		//dominio single-objective para gerar as options só com os ouros
 		if(objetivo2){
 			//criaçao do dominio usado para gerar as politicas otimas iniciais
-			//			if(o2semOptions){
+			//					qLearningExample4.rodarExperimentoSemAprenderOption(qLearningExample4.domain4,true,3)	if(o2semOptions){
 			gwdg = new GridWorldDomain2(11, 11,2);
 			gwdg.setMapToFourRooms();
 			gwdg.setTf(tf);
@@ -250,178 +438,10 @@ public class BasicBehavior<idx> {
 			domain4 = gwdg2.generateDomain();
 			env2 = new SimulatedEnvironment(domain4, initialState);
 		}
-
-		//codigo para visualizar o experimento1
-				VisualActionObserver observer1 = new VisualActionObserver(domain1, 
-						GridWorldVisualizer2.getVisualizer(gwdg.getMap()));
-				observer1.initGUI();
-				env.addObservers(observer1);
-
-		//codigo para visualizar o experimento2
-		//						VisualActionObserver observer2 = new VisualActionObserver(domain2, 
-		//								GridWorldVisualizer2.getVisualizer(gwdg.getMap()));
-		//						observer2.initGUI();
-		//						env.addObservers(observer2);
-
-		//codigo para visualizar o experimento3
-		//		VisualActionObserver observer3 = new VisualActionObserver(domain3, 
-		//				GridWorldVisualizer2.getVisualizer(gwdg.getMap()));
-		//		observer3.initGUI();
-		//		env.addObservers(observer3);
-
-
-		//codigo para visualizar o experimento4
-		//		VisualActionObserver observer4 = new VisualActionObserver(domain4, 
-		//				GridWorldVisualizer2.getVisualizer(gwdg2.getMap()));
-		//		observer4.initGUI();
-		//		env2.addObservers(observer4);
 	}
-
-
-	public static void main(String[] args) throws IOException {
-
-		//BasicBehavior qLearningExample2 = new BasicBehavior();
-
-		//		BasicBehavior qLearningGreedy = new BasicBehavior();
-		//		String outputPath = "output/";
-
-		String outputPath = "output/"; // directory to record results
-		String outputPath2 = "output2/";
-		String outputPath3 = "output3/";
-		String outputPath4 = "output4/";
-
-		boolean visualizarExperimento = false;
-
-
-		//rodando com as options descobertas só para objetivo 1(caminho - qtd de steps)
-		if(experimento1){
-
-			String outputPathTeste = "output1";
-
-			BasicBehavior qLearningExample = new BasicBehavior();
-
-			//roda q-learning para extrair as options com policyblocks
-			List<Option> opt1 = qLearningExample.rodaExperimento(1);	
-			
-			//salvar as options aprendidas
-			int contaOption = 1;
-			for(Option opt :opt1){
-				((MOOption) opt).salvaArquivo("/home/lti/experimento/test"+contaOption+" mapa"+mapa+".csv");
-				contaOption++;
-			}
-			
-			
-			
-			
-			
-			
-			
-			
-			
-
-			//ler as options aprendidas
-//			for(Option opt :opt1){
-//				((MOOption) opt).carregaArquivo("/home/lti/experimento/test"+contaOption+".csv");
-//				contaOption++;
-//			}
-			
-			
-			//roda experimento sem option
-			//qLearningExample.rodarExperimentoSemAprenderOption(qLearningExample.domain1,false,1); //dominio, true = comOptions e false = semOptions, numero do experimento
-
-			//adiciona as options no dominio
-			//qLearningExample.domain1.addActionTypes(getActionTypesFromOption(opt1));
-
-			//roda experimento com options aprendidas
-			//qLearningExample.rodarExperimentoSemAprenderOption(qLearningExample.domain1,true,1);
-			//
-						if(visualizarExperimento){
-							qLearningExample.visualize(outputPath);
-						}
-			//						contadorExperimentos++;
-		}
-
-
-		//rodando com as options descobertas no gold mine
-		if(experimento2){
-			BasicBehavior qLearningExample2 = new BasicBehavior();
-
-			//roda q-learning para extrair as options com policyblocks
-			List<Option> opt2 = qLearningExample2.rodaExperimento(2);
-
-			//roda experimento sem option
-			qLearningExample2.rodarExperimentoSemAprenderOption(qLearningExample2.domain2,false,2);
-
-			//adiciona as options no dominio
-			qLearningExample2.domain2.addActionTypes(getActionTypesFromOption(opt2));
-
-
-			qLearningExample2.rodarExperimentoSemAprenderOption(qLearningExample2.domain2,true,2);
-
-			//									if(visualizarExperimento){
-			//										qLearningExample2.visualize(outputPath2);
-			//									}
-		}
-
-		//rodando com as 2 options descobertas nos 2 dominios
-		if(experimento3){
-			BasicBehavior qLearningExample3 = new BasicBehavior();
-			//roda q-learning para extrair as options com policyblocks
-			List<Option> opt1 = qLearningExample3.rodaExperimento(1);
-			//roda q-learning para extrair as options com policyblocks
-			List<Option> opt2 = qLearningExample3.rodaExperimento(2);
-
-			//roda experimento sem option
-			qLearningExample3.rodarExperimentoSemAprenderOption(qLearningExample3.domain3,false,3);
-
-			//adiciona as options no dominio
-			qLearningExample3.domain3.addActionTypes(getActionTypesFromOption(opt1));
-			//adiciona as options no dominio
-			qLearningExample3.domain3.addActionTypes(getActionTypesFromOption(opt2));
-
-			//roda experimento com option
-			qLearningExample3.rodarExperimentoSemAprenderOption(qLearningExample3.domain3,true,3);
-
-			//			if(visualizarExperimento){
-			//				qLearningExample3.visualize(outputPath3);
-			//			}
-		}
-
-
-		//rodando com options aprendidas nos dos 2 dominios e transfer learning para um dominio com muros diferentes
-		if(experimento4){
-
-			agenteRandom = false;
-
-			BasicBehavior qLearningExample4 = new BasicBehavior();
-
-			//cria o agente randomicamente ou no 0,0
-			//qLearningExample4.createAgent();
-
-			//descobre as options no 1o dominio single objective
-			List<Option> opt1 = qLearningExample4.rodaExperimento(1);
-			//descobre as options no 1o dominio single objective
-			List<Option> opt2 = qLearningExample4.rodaExperimento(2);
-
-			//aprendendo as options no dominio 3(com objetivos 1 e 2)
-			qLearningExample4.rodarExperimentoSemAprenderOption(qLearningExample4.domain3,false,3);
-
-			//adicionando as options no dominio 4
-			qLearningExample4.domain4.addActionTypes(getActionTypesFromOption(opt1));
-			//adicionando as options no dominio 4
-			qLearningExample4.domain4.addActionTypes(getActionTypesFromOption(opt2));
-
-			//parametro pra controle de execuçao do dominio 4
-			dominio4Rodar = true;
-			//mudar os muros 1x antes de rodar de novo com as options aprendidas
-			qLearningExample4.rodarExperimentoSemAprenderOption(qLearningExample4.domain4,true,3);
-			//
-			//			if(visualizarExperimento){
-			//				qLearningExample4.visualize(outputPath4);
-			//			}
-		}
-
-	}
+	
+	
+	
 
 
 	private void rodarExperimentoSemAprenderOption(OOSADomain domain, boolean comOptions, int experiment) throws FileNotFoundException {
@@ -464,11 +484,11 @@ public class BasicBehavior<idx> {
 
 			//nomeia os arquivos de acordo com o experimento
 			//		Path source1 = Paths.get("/Users/lti/Desktop/testComOption"+experiment+".csv");
-			Path source1 = Paths.get("/home/lti/experimento/testComOptionMapa1"+experiment+".csv");
+			Path source1 = Paths.get("/home/lti/experimento/testComOptionMapa1 experimento "+experiment+ ".csv");
 			Charset charset = Charset.forName("Us-ASCII");
 
 			//		Path source2 = Paths.get("/Users/lti/Desktop/testSemOption"+experiment+".csv");
-			Path source2 = Paths.get("/home/lti/experimento/testSemOptionMapa1"+experiment+".csv");
+			Path source2 = Paths.get("/home/lti/experimento/testSemOptionMapa1 experimento "+experiment+".csv");
 			Charset charset2 = Charset.forName("Us-ASCII");
 
 			//		Path auxiliar = Paths.get("/Users/lti/Desktop/testSemOptionAuxiliar.csv");
@@ -561,10 +581,7 @@ public class BasicBehavior<idx> {
 				}
 				System.out.println("\n Finish experiment "+contadorExperimentos);
 				contadorExperimentos++;
-				if(contadorExperimentos>=10){
-					controleBreakpoint = true;
 				}
-			}
 		}
 
 
@@ -572,20 +589,20 @@ public class BasicBehavior<idx> {
 		if(mapa2){
 			if(comOptions){
 				//			new File("/Users/lti/Desktop/testComOption"+experiment+".csv").delete();
-				new File("/home/lti/experimento/testComOptionMapa2"+experiment+".csv").delete();
+				new File("/home/lti/experimento/testComOptionMapa2 experimento "+experiment+ ".csv").delete();
 			}
 			else{	
 				//			new File("/Users/lti/Desktop/testSemOption"+experiment+".csv").delete();
-				new File("/home/lti/experimento/testSemOptionMapa2"+experiment+".csv").delete();
+				new File("/home/lti/experimento/testSemOptionMapa2"+experiment+" experimento "+".csv").delete();
 			}
 
 			//nomeia os arquivos de acordo com o experimento
 			//		Path source1 = Paths.get("/Users/lti/Desktop/testComOption"+experiment+".csv");
-			Path source1 = Paths.get("/home/lti/experimento/testComOptionMapa2"+experiment+".csv");
+			Path source1 = Paths.get("/home/lti/experimento/testComOptionMapa2 experimento "+experiment+ ".csv");
 			Charset charset = Charset.forName("Us-ASCII");
 
 			//		Path source2 = Paths.get("/Users/lti/Desktop/testSemOption"+experiment+".csv");
-			Path source2 = Paths.get("/home/lti/experimento/testSemOptionMapa2"+experiment+".csv");
+			Path source2 = Paths.get("/home/lti/experimento/testSemOptionMapa2"+" experimento "+experiment+".csv");
 			Charset charset2 = Charset.forName("Us-ASCII");
 
 			//		Path auxiliar = Paths.get("/Users/lti/Desktop/testSemOptionAuxiliar.csv");
@@ -684,7 +701,7 @@ public class BasicBehavior<idx> {
 		if(mapa3){
 			if(comOptions){
 				//			new File("/Users/lti/Desktop/testComOption"+experiment+".csv").delete();
-				new File("/home/lti/experimento/testComOptionMapa3"+experiment+".csv").delete();
+				new File("/home/lti/experimento/testComOptionMapa3 experimento "+experiment+ ".csv").delete();
 			}
 			else{	
 				//			new File("/Users/lti/Desktop/testSemOption"+experiment+".csv").delete();
@@ -693,7 +710,7 @@ public class BasicBehavior<idx> {
 
 			//nomeia os arquivos de acordo com o experimento
 			//		Path source1 = Paths.get("/Users/lti/Desktop/testComOption"+experiment+".csv");
-			Path source1 = Paths.get("/home/lti/experimento/testComOptionMapa3"+experiment+".csv");
+			Path source1 = Paths.get("/home/lti/experimento/testComOptionMapa3 experimento "+experiment+ ".csv");
 			Charset charset = Charset.forName("Us-ASCII");
 
 			//		Path source2 = Paths.get("/Users/lti/Desktop/testSemOption"+experiment+".csv");
@@ -797,7 +814,7 @@ public class BasicBehavior<idx> {
 		if(mapa4){
 			if(comOptions){
 				//			new File("/Users/lti/Desktop/testComOption"+experiment+".csv").delete();
-				new File("/home/lti/experimento/testComOptionMapa4"+experiment+".csv").delete();
+				new File("/home/lti/experimento/testComOptionMapa4 experimento "+experiment+ ".csv").delete();
 			}
 			else{	
 				//			new File("/Users/lti/Desktop/testSemOption"+experiment+".csv").delete();
@@ -806,7 +823,7 @@ public class BasicBehavior<idx> {
 
 			//nomeia os arquivos de acordo com o experimento
 			//		Path source1 = Paths.get("/Users/lti/Desktop/testComOption"+experiment+".csv");
-			Path source1 = Paths.get("/home/lti/experimento/testComOptionMapa4"+experiment+".csv");
+			Path source1 = Paths.get("/home/lti/experimento/testComOptionMapa4 experimento "+experiment+ ".csv");
 			Charset charset = Charset.forName("Us-ASCII");
 
 			//		Path source2 = Paths.get("/Users/lti/Desktop/testSemOption"+experiment+".csv");
@@ -910,7 +927,7 @@ public class BasicBehavior<idx> {
 		if(mapa5){
 			if(comOptions){
 				//			new File("/Users/lti/Desktop/testComOption"+experiment+".csv").delete();
-				new File("/home/lti/experimento/testComOptionMapa5"+experiment+".csv").delete();
+				new File("/home/lti/experimento/testComOptionMapa5 experimento "+experiment+ ".csv").delete();
 			}
 			else{	
 				//			new File("/Users/lti/Desktop/testSemOption"+experiment+".csv").delete();
@@ -919,7 +936,7 @@ public class BasicBehavior<idx> {
 
 			//nomeia os arquivos de acordo com o experimento
 			//		Path source1 = Paths.get("/Users/lti/Desktop/testComOption"+experiment+".csv");
-			Path source1 = Paths.get("/home/lti/experimento/testComOptionMapa5"+experiment+".csv");
+			Path source1 = Paths.get("/home/lti/experimento/testComOptionMapa5 experimento "+experiment+ ".csv");
 			Charset charset = Charset.forName("Us-ASCII");
 
 			//		Path source2 = Paths.get("/Users/lti/Desktop/testSemOption"+experiment+".csv");
@@ -1023,7 +1040,7 @@ public class BasicBehavior<idx> {
 		if(mapa6){
 			if(comOptions){
 				//			new File("/Users/lti/Desktop/testComOption"+experiment+".csv").delete();
-				new File("/home/lti/experimento/testComOptionMapa6"+experiment+".csv").delete();
+				new File("/home/lti/experimento/testComOptionMapa6 experimento "+experiment+ ".csv").delete();
 			}
 			else{	
 				//			new File("/Users/lti/Desktop/testSemOption"+experiment+".csv").delete();
@@ -1032,7 +1049,7 @@ public class BasicBehavior<idx> {
 
 			//nomeia os arquivos de acordo com o experimento
 			//		Path source1 = Paths.get("/Users/lti/Desktop/testComOption"+experiment+".csv");
-			Path source1 = Paths.get("/home/lti/experimento/testComOptionMapa6"+experiment+".csv");
+			Path source1 = Paths.get("/home/lti/experimento/testComOptionMapa6 experimento "+experiment+ ".csv");
 			Charset charset = Charset.forName("Us-ASCII");
 
 			//		Path source2 = Paths.get("/Users/lti/Desktop/testSemOption"+experiment+".csv");
@@ -1286,10 +1303,10 @@ public class BasicBehavior<idx> {
 
 
 	//visualizar experimento1
-		public void visualize(String outputpath){
-			Visualizer v = GridWorldVisualizer2.getVisualizer(gwdg.getMap());
-			new EpisodeSequenceVisualizer(v, domain1, outputpath);
-		}
+//	public void visualize(String outputpath){
+//		Visualizer v = GridWorldVisualizer2.getVisualizer(gwdg.getMap());
+//		new EpisodeSequenceVisualizer(v, domain1, outputpath);
+//	}
 
 	//visualizar experimento2
 	//	public void visualize(String outputpath2){
@@ -1806,7 +1823,7 @@ public class BasicBehavior<idx> {
 
 
 	//criar o objeto do ouro e passar ele
-	private GridGold[] createGolds() {
+	private static GridGold[] createGolds() {
 
 		boolean criaGoldRandom = false;
 
@@ -1853,7 +1870,7 @@ public class BasicBehavior<idx> {
 	}
 
 
-	private GridAgent2 createAgent() {
+	private static GridAgent2 createAgent() {
 
 		//boolean criaAgentRandom = true;
 
