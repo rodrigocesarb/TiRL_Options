@@ -133,12 +133,12 @@ public class BasicBehavior<idx> {
 	static int qtdExperimentos = 10;
 	static int mapa = 0;
 
-	boolean mapa1 = false;
+	boolean mapa1 = true;
 	boolean mapa2 = false;
 	boolean mapa3 = false;
 	boolean mapa4 = false;
 	boolean mapa5 = false;
-	boolean mapa6 = true;
+	boolean mapa6 = false;
 
 	Hashtable<HashableState, Action> condicaoInicial = new Hashtable<HashableState, Action>();
 

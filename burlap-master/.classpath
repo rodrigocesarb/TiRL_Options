@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry kind="src" path="src/test/java"/>
+	<classpathentry kind="lib" path="burlap-repo/org/rlcommunity/rlglue/JavaRLGlueCodec/1.0/JavaRLGlueCodec-1.0.jar"/>
+	<classpathentry kind="lib" path="burlap-repo/org/scpsolver/LPSOLVESolverPack/1.0/LPSOLVESolverPack-1.0.jar"/>
+	<classpathentry kind="lib" path="burlap-repo/org/scpsolver/SCPSolver/1.0/SCPSolver-1.0.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/home/lti/Downloads/burlap-3.0.1.jar"/>
+	<classpathentry kind="lib" path="/home/lti/Downloads/burlap-3.0.1-jar-with-dependencies.jar"/>
+	<classpathentry kind="lib" path="/home/lti/Downloads/burlap-3.0.1-sources.jar"/>
+	<classpathentry kind="lib" path="/Common-Due-Date-Scheduling-master8/lib/commons-math3-3.6.1.jar"/>
+	<classpathentry kind="lib" path="/Common-Due-Date-Scheduling-master8/lib/guava-14.0-rc3.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
