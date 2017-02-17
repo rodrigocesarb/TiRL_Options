@@ -97,8 +97,8 @@ public class BasicBehavior<idx> {
 
 
 	//SEMPRE DEIXAR ESSAS 2 VARIAVEIS COM VALORES IGUAIS!!!
-	int episodes = 1000; //quantidade de episodios utilizados para geraçao das politicas otimas
-	int controleEpisodes = 1000;    //quantidade de rodadas do experimento(gerar excel)
+	int episodes = 100; //quantidade de episodios utilizados para geraçao das politicas otimas
+	int controleEpisodes = 100;    //quantidade de rodadas do experimento(gerar excel)
 
 	int nOptions = 3; //numero desejado de options (O) -- se colocar numero diferente de 3 ta dando pau
 	int contadorPowerSet = 1;  //contador de politicas geradas no powerset (ps)
@@ -130,7 +130,7 @@ public class BasicBehavior<idx> {
 
 	//variaveis para controlar a quantidade de experimentos que acontecerão
 
-	static int qtdExperimentos = 10;
+	static int qtdExperimentos = 1;
 	static int mapa = 0;
 
 	static int controleMapa = 1;
@@ -141,6 +141,13 @@ public class BasicBehavior<idx> {
 	static boolean mapa4 = true;
 	static boolean mapa5 = true;
 	static boolean mapa6 = true;
+
+	static boolean mapaAval1 = true;
+	static boolean mapaAval2 = true;
+	static boolean mapaAval3 = true;
+	static boolean mapaAval4 = true;
+	static boolean mapaAval55 = true;
+	static boolean mapaAval6 = true;
 
 	Hashtable<HashableState, Action> condicaoInicial = new Hashtable<HashableState, Action>();
 
@@ -178,10 +185,16 @@ public class BasicBehavior<idx> {
 
 	public static void main(String[] args) throws IOException {
 
-		int qtdMapas = 6;
-		
+		int qtdMapas = 6; //quantidade de mapas a serem explorados para se obter as options
+		int qtdMapasTotal = qtdMapas*2;
+
+		String outputPathTeste = "output1";
+
+		BasicBehavior qLearningExample = new BasicBehavior();
+
+		//vai rodar todo o experimento para cada mapa
 		while(controleMapa <= qtdMapas){
-			criaExperimento();
+			criaExperimento(); //"construtor" dos mapas e do problema
 			//BasicBehavior qLearningExample2 = new BasicBehavior();
 
 			//		BasicBehavior qLearningGreedy = new BasicBehavior();
@@ -189,13 +202,10 @@ public class BasicBehavior<idx> {
 
 
 			//codigo para visualizar o experimento1
-//			VisualActionObserver observer1 = new VisualActionObserver(domain1, 
-//					GridWorldVisualizer2.getVisualizer(gwdg.getMap()));
-//			observer1.initGUI();
-//			env.addObservers(observer1);
-
-
-
+			//			VisualActionObserver observer1 = new VisualActionObserver(domain1, 
+			//					GridWorldVisualizer2.getVisualizer(gwdg.getMap()));
+			//			observer1.initGUI();
+			//			env.addObservers(observer1);
 			String outputPath = "output/"; // directory to record results
 			String outputPath2 = "output2/";
 			String outputPath3 = "output3/";
@@ -203,29 +213,20 @@ public class BasicBehavior<idx> {
 
 			boolean visualizarExperimento = false;
 
-
 			//rodando com as options descobertas só para objetivo 1(caminho - qtd de steps)
 			if(experimento1){
 
-				String outputPathTeste = "output1";
 
-				BasicBehavior qLearningExample = new BasicBehavior();
 
 				//roda q-learning para extrair as options com policyblocks
 				List<Option> opt1 = qLearningExample.rodaExperimento(1);	
 
-				//salvar as options aprendidas
+				//salvar as options aprendidas para cada mapa
 				int contaOption = 1;
 				for(Option opt :opt1){
-					((MOOption) opt).salvaArquivo("/home/lti/experimento/test"+contaOption+" mapa"+mapa+".csv");
+					((MOOption) opt).salvaArquivo("/home/lti/experimento/learnedOption "+contaOption+" mapa"+mapa+".csv");
 					contaOption++;
 				}
-
-
-
-
-
-
 
 				//ler as options aprendidas
 				//			for(Option opt :opt1){
@@ -234,106 +235,117 @@ public class BasicBehavior<idx> {
 				//			}
 
 
-				//roda experimento sem option
-				//qLearningExample.rodarExperimentoSemAprenderOption(qLearningExample.domain1,false,1); //dominio, true = comOptions e false = semOptions, numero do experimento
+
+
 
 				//adiciona as options no dominio
-				//qLearningExample.domain1.addActionTypes(getActionTypesFromOption(opt1));
+				qLearningExample.domain1.addActionTypes(getActionTypesFromOption(opt1)); //aki modificar para combinar as options
 
-				//roda experimento com options aprendidas
-				qLearningExample.rodarExperimentoSemAprenderOption(qLearningExample.domain1,true,1);
+				//roda experimento com options aprendidas no novo domínio
+				//				qLearningExample.rodarExperimentoSemAprenderOption(qLearningExample.domain1,true,1);
 				//
-//				if(visualizarExperimento){
-//					qLearningExample.visualize(outputPath);
-//				}
+				//				if(visualizarExperimento){
+				//					qLearningExample.visualize(outputPath);
+				//				}
 				//						contadorExperimentos++;
 			}
+			controleMapa++; //controle de qual mapa está sendo explorado
+		}
+
+		while(controleMapa <= qtdMapasTotal){
+			criaExperimento();
+			//roda experimento com options aprendidas no novo domínio
+			qLearningExample.rodarExperimentoSemAprenderOption(qLearningExample.domain1,true,1);
+
+			//roda experimento sem options para efeito de comparação
+			qLearningExample.rodarExperimentoSemAprenderOption(qLearningExample.domain1,false,1); //dominio, true = comOptions e false = semOptions, numero do experimento
+			
 			controleMapa++;
 		}
 
+		//rodando com as options descobertas no gold mine
+		//			if(experimento2){
+		//				BasicBehavior qLearningExample2 = new BasicBehavior();
+		//
+		//				//roda q-learning para extrair as options com policyblocks
+		//				List<Option> opt2 = qLearningExample2.rodaExperimento(2);
+		//
+		//				//roda experimento sem option
+		//				qLearningExample2.rodarExperimentoSemAprenderOption(qLearningExample2.domain2,false,2);
+		//
+		//				//adiciona as options no dominio
+		//				qLearningExample2.domain2.addActionTypes(getActionTypesFromOption(opt2));
+		//
+		//
+		//				qLearningExample2.rodarExperimentoSemAprenderOption(qLearningExample2.domain2,true,2);
+		//
+		//				//									if(visualizarExperimento){
+		//				//										qLearningExample2.visualize(outputPath2);
+		//				//									}
+		//			}
+		//
+		//por enquanto não utilizada nesse experimento essa parte do codigo
+		//			//rodando com as 2 options descobertas nos 2 dominios
+		//			if(experimento3){
+		//				BasicBehavior qLearningExample3 = new BasicBehavior();
+		//				//roda q-learning para extrair as options com policyblocks
+		//				List<Option> opt1 = qLearningExample3.rodaExperimento(1);
+		//				//roda q-learning para extrair as options com policyblocks
+		//				List<Option> opt2 = qLearningExample3.rodaExperimento(2);
+		//
+		//				//roda experimento sem option
+		//				qLearningExample3.rodarExperimentoSemAprenderOption(qLearningExample3.domain3,false,3);
+		//
+		//				//adiciona as options no dominio
+		//				qLearningExample3.domain3.addActionTypes(getActionTypesFromOption(opt1));
+		//				//adiciona as options no dominio
+		//				qLearningExample3.domain3.addActionTypes(getActionTypesFromOption(opt2));
+		//
+		//				//roda experimento com option
+		//				qLearningExample3.rodarExperimentoSemAprenderOption(qLearningExample3.domain3,true,3);
+		//
+		//				//			if(visualizarExperimento){
+		//				//				qLearningExample3.visualize(outputPath3);
+		//				//			}
+		//			}
+		//
+		//
+		//			//rodando com options aprendidas nos dos 2 dominios e transfer learning para um dominio com muros diferentes
+		//			if(experimento4){
+		//
+		//				agenteRandom = false;
+		//
+		//				BasicBehavior qLearningExample4 = new BasicBehavior();
+		//
+		//				//cria o agente randomicamente ou no 0,0
+		//				//qLearningExample4.createAgent();
+		//
+		//				//descobre as options no 1o dominio single objective
+		//				List<Option> opt1 = qLearningExample4.rodaExperimento(1);
+		//				//descobre as options no 1o dominio single objective
+		//				List<Option> opt2 = qLearningExample4.rodaExperimento(2);
+		//
+		//				//aprendendo as options no dominio 3(com objetivos 1 e 2)
+		//				qLearningExample4.rodarExperimentoSemAprenderOption(qLearningExample4.domain3,false,3);
+		//
+		//				//adicionando as options no dominio 4
+		//				qLearningExample4.domain4.addActionTypes(getActionTypesFromOption(opt1));
+		//				//adicionando as options no dominio 4
+		//				qLearningExample4.domain4.addActionTypes(getActionTypesFromOption(opt2));
+		//
+		//				//parametro pra controle de execuçao do dominio 4
+		//				dominio4Rodar = true;
+		//				//mudar os muros 1x antes de rodar de novo com as options aprendidas
+		//				qLearningExample4.rodarExperimentoSemAprenderOption(qLearningExample4.domain4,true,3);
+		//				//
+		//				//			if(visualizarExperimento){
+		//				//				qLearningExample4.visualize(outputPath4);
+		//				//			}
+		//			}
 
-			//rodando com as options descobertas no gold mine
-			if(experimento2){
-				BasicBehavior qLearningExample2 = new BasicBehavior();
-
-				//roda q-learning para extrair as options com policyblocks
-				List<Option> opt2 = qLearningExample2.rodaExperimento(2);
-
-				//roda experimento sem option
-				qLearningExample2.rodarExperimentoSemAprenderOption(qLearningExample2.domain2,false,2);
-
-				//adiciona as options no dominio
-				qLearningExample2.domain2.addActionTypes(getActionTypesFromOption(opt2));
-
-
-				qLearningExample2.rodarExperimentoSemAprenderOption(qLearningExample2.domain2,true,2);
-
-				//									if(visualizarExperimento){
-				//										qLearningExample2.visualize(outputPath2);
-				//									}
-			}
-
-			//rodando com as 2 options descobertas nos 2 dominios
-			if(experimento3){
-				BasicBehavior qLearningExample3 = new BasicBehavior();
-				//roda q-learning para extrair as options com policyblocks
-				List<Option> opt1 = qLearningExample3.rodaExperimento(1);
-				//roda q-learning para extrair as options com policyblocks
-				List<Option> opt2 = qLearningExample3.rodaExperimento(2);
-
-				//roda experimento sem option
-				qLearningExample3.rodarExperimentoSemAprenderOption(qLearningExample3.domain3,false,3);
-
-				//adiciona as options no dominio
-				qLearningExample3.domain3.addActionTypes(getActionTypesFromOption(opt1));
-				//adiciona as options no dominio
-				qLearningExample3.domain3.addActionTypes(getActionTypesFromOption(opt2));
-
-				//roda experimento com option
-				qLearningExample3.rodarExperimentoSemAprenderOption(qLearningExample3.domain3,true,3);
-
-				//			if(visualizarExperimento){
-				//				qLearningExample3.visualize(outputPath3);
-				//			}
-			}
-
-
-			//rodando com options aprendidas nos dos 2 dominios e transfer learning para um dominio com muros diferentes
-			if(experimento4){
-
-				agenteRandom = false;
-
-				BasicBehavior qLearningExample4 = new BasicBehavior();
-
-				//cria o agente randomicamente ou no 0,0
-				//qLearningExample4.createAgent();
-
-				//descobre as options no 1o dominio single objective
-				List<Option> opt1 = qLearningExample4.rodaExperimento(1);
-				//descobre as options no 1o dominio single objective
-				List<Option> opt2 = qLearningExample4.rodaExperimento(2);
-
-				//aprendendo as options no dominio 3(com objetivos 1 e 2)
-				qLearningExample4.rodarExperimentoSemAprenderOption(qLearningExample4.domain3,false,3);
-
-				//adicionando as options no dominio 4
-				qLearningExample4.domain4.addActionTypes(getActionTypesFromOption(opt1));
-				//adicionando as options no dominio 4
-				qLearningExample4.domain4.addActionTypes(getActionTypesFromOption(opt2));
-
-				//parametro pra controle de execuçao do dominio 4
-				dominio4Rodar = true;
-				//mudar os muros 1x antes de rodar de novo com as options aprendidas
-				qLearningExample4.rodarExperimentoSemAprenderOption(qLearningExample4.domain4,true,3);
-				//
-				//			if(visualizarExperimento){
-				//				qLearningExample4.visualize(outputPath4);
-				//			}
-			}
-		
 	}
-	
-	
+
+
 	public static void criaExperimento(){
 		GridGold[] golds = createGolds(); //parametro interno controla quantos ouros serao criados
 
@@ -393,6 +405,58 @@ public class BasicBehavior<idx> {
 				goalCondition = new TFGoalCondition(tf);
 			}
 
+
+
+			if(mapaAval1 && controleMapa == 7){
+				mapa = 11;
+				initialState = new GridWorldState2(agente, new GridLocation2[]{new GridLocation2(9,10, "loc0")},golds); //location eh onde fica o objetivo
+				hashingFactory = new SimpleHashableStateFactory();
+				tf = new GridWorldTerminalFunction2(9,10); //termination function eh onde fica o estado terminal
+				goalCondition = new TFGoalCondition(tf);
+			}
+
+
+			if(mapaAval2 && controleMapa == 8){
+				mapa = 22;
+				initialState = new GridWorldState2(agente, new GridLocation2[]{new GridLocation2(0,6, "loc0")},golds); //location eh onde fica o objetivo
+				hashingFactory = new SimpleHashableStateFactory();
+				tf = new GridWorldTerminalFunction2(0,6); //termination function eh onde fica o estado terminal
+				goalCondition = new TFGoalCondition(tf);
+			}
+
+			if(mapaAval3 && controleMapa == 9){
+				mapa = 33;
+				initialState = new GridWorldState2(agente, new GridLocation2[]{new GridLocation2(9,6, "loc0")},golds); //location eh onde fica o objetivo
+				hashingFactory = new SimpleHashableStateFactory();
+				tf = new GridWorldTerminalFunction2(9,6); //termination function eh onde fica o estado terminal
+				goalCondition = new TFGoalCondition(tf);
+			}
+			
+			if(mapaAval4 && controleMapa == 10){
+				mapa = 44;
+				initialState = new GridWorldState2(agente, new GridLocation2[]{new GridLocation2(7,1, "loc0")},golds); //location eh onde fica o objetivo
+				hashingFactory = new SimpleHashableStateFactory();
+				tf = new GridWorldTerminalFunction2(7,1); //termination function eh onde fica o estado terminal
+				goalCondition = new TFGoalCondition(tf);
+			}
+			
+			if(mapaAval55 && controleMapa == 11){
+				mapa = 55;
+				initialState = new GridWorldState2(agente, new GridLocation2[]{new GridLocation2(0,9, "loc0")},golds); //location eh onde fica o objetivo
+				hashingFactory = new SimpleHashableStateFactory();
+				tf = new GridWorldTerminalFunction2(0,9); //termination function eh onde fica o estado terminal
+				goalCondition = new TFGoalCondition(tf);
+			}
+			
+			if(mapaAval6 && controleMapa == 12){
+				mapa = 66;
+				initialState = new GridWorldState2(agente, new GridLocation2[]{new GridLocation2(3,1, "loc0")},golds); //location eh onde fica o objetivo
+				hashingFactory = new SimpleHashableStateFactory();
+				tf = new GridWorldTerminalFunction2(3,1); //termination function eh onde fica o estado terminal
+				goalCondition = new TFGoalCondition(tf);
+			}
+
+
 		}
 
 
@@ -439,9 +503,9 @@ public class BasicBehavior<idx> {
 			env2 = new SimulatedEnvironment(domain4, initialState);
 		}
 	}
-	
-	
-	
+
+
+
 
 
 	private void rodarExperimentoSemAprenderOption(OOSADomain domain, boolean comOptions, int experiment) throws FileNotFoundException {
@@ -581,7 +645,7 @@ public class BasicBehavior<idx> {
 				}
 				System.out.println("\n Finish experiment "+contadorExperimentos);
 				contadorExperimentos++;
-				}
+			}
 		}
 
 
@@ -589,7 +653,7 @@ public class BasicBehavior<idx> {
 		if(mapa2){
 			if(comOptions){
 				//			new File("/Users/lti/Desktop/testComOption"+experiment+".csv").delete();
-				new File("/home/lti/experimento/testComOptionMapa2 experimento "+experiment+ ".csv").delete();
+				new File("/home/lti/experimento/testComOptionMapa2"+experiment+".csv").delete();
 			}
 			else{	
 				//			new File("/Users/lti/Desktop/testSemOption"+experiment+".csv").delete();
@@ -701,7 +765,7 @@ public class BasicBehavior<idx> {
 		if(mapa3){
 			if(comOptions){
 				//			new File("/Users/lti/Desktop/testComOption"+experiment+".csv").delete();
-				new File("/home/lti/experimento/testComOptionMapa3 experimento "+experiment+ ".csv").delete();
+				new File("/home/lti/experimento/testComOptionMapa3"+experiment+".csv").delete();
 			}
 			else{	
 				//			new File("/Users/lti/Desktop/testSemOption"+experiment+".csv").delete();
@@ -714,7 +778,7 @@ public class BasicBehavior<idx> {
 			Charset charset = Charset.forName("Us-ASCII");
 
 			//		Path source2 = Paths.get("/Users/lti/Desktop/testSemOption"+experiment+".csv");
-			Path source2 = Paths.get("/home/lti/experimento/testSemOptionMapa3"+experiment+".csv");
+			Path source2 = Paths.get("/home/lti/experimento/testSemOptionMapa3 experimento "+experiment+ ".csv");
 			Charset charset2 = Charset.forName("Us-ASCII");
 
 			//		Path auxiliar = Paths.get("/Users/lti/Desktop/testSemOptionAuxiliar.csv");
@@ -814,7 +878,7 @@ public class BasicBehavior<idx> {
 		if(mapa4){
 			if(comOptions){
 				//			new File("/Users/lti/Desktop/testComOption"+experiment+".csv").delete();
-				new File("/home/lti/experimento/testComOptionMapa4 experimento "+experiment+ ".csv").delete();
+				new File("/home/lti/experimento/testComOptionMapa4"+experiment+".csv").delete();
 			}
 			else{	
 				//			new File("/Users/lti/Desktop/testSemOption"+experiment+".csv").delete();
@@ -827,7 +891,7 @@ public class BasicBehavior<idx> {
 			Charset charset = Charset.forName("Us-ASCII");
 
 			//		Path source2 = Paths.get("/Users/lti/Desktop/testSemOption"+experiment+".csv");
-			Path source2 = Paths.get("/home/lti/experimento/testSemOptionMapa4"+experiment+".csv");
+			Path source2 = Paths.get("/home/lti/experimento/testSemOptionMapa4 experimento "+experiment+ ".csv");
 			Charset charset2 = Charset.forName("Us-ASCII");
 
 			//		Path auxiliar = Paths.get("/Users/lti/Desktop/testSemOptionAuxiliar.csv");
@@ -927,7 +991,7 @@ public class BasicBehavior<idx> {
 		if(mapa5){
 			if(comOptions){
 				//			new File("/Users/lti/Desktop/testComOption"+experiment+".csv").delete();
-				new File("/home/lti/experimento/testComOptionMapa5 experimento "+experiment+ ".csv").delete();
+				new File("/home/lti/experimento/testComOptionMapa5"+experiment+".csv").delete();
 			}
 			else{	
 				//			new File("/Users/lti/Desktop/testSemOption"+experiment+".csv").delete();
@@ -940,7 +1004,7 @@ public class BasicBehavior<idx> {
 			Charset charset = Charset.forName("Us-ASCII");
 
 			//		Path source2 = Paths.get("/Users/lti/Desktop/testSemOption"+experiment+".csv");
-			Path source2 = Paths.get("/home/lti/experimento/testSemOptionMapa5"+experiment+".csv");
+			Path source2 = Paths.get("/home/lti/experimento/testSemOptionMapa5 experimento "+experiment+ ".csv");
 			Charset charset2 = Charset.forName("Us-ASCII");
 
 			//		Path auxiliar = Paths.get("/Users/lti/Desktop/testSemOptionAuxiliar.csv");
@@ -1040,7 +1104,7 @@ public class BasicBehavior<idx> {
 		if(mapa6){
 			if(comOptions){
 				//			new File("/Users/lti/Desktop/testComOption"+experiment+".csv").delete();
-				new File("/home/lti/experimento/testComOptionMapa6 experimento "+experiment+ ".csv").delete();
+				new File("/home/lti/experimento/testComOptionMapa6"+experiment+".csv").delete();
 			}
 			else{	
 				//			new File("/Users/lti/Desktop/testSemOption"+experiment+".csv").delete();
@@ -1053,7 +1117,7 @@ public class BasicBehavior<idx> {
 			Charset charset = Charset.forName("Us-ASCII");
 
 			//		Path source2 = Paths.get("/Users/lti/Desktop/testSemOption"+experiment+".csv");
-			Path source2 = Paths.get("/home/lti/experimento/testSemOptionMapa6"+experiment+".csv");
+			Path source2 = Paths.get("/home/lti/experimento/testSemOptionMapa6 experimento "+experiment+ ".csv");
 			Charset charset2 = Charset.forName("Us-ASCII");
 
 			//		Path auxiliar = Paths.get("/Users/lti/Desktop/testSemOptionAuxiliar.csv");
@@ -1160,6 +1224,721 @@ public class BasicBehavior<idx> {
 	}//fim metodo
 
 
+	
+	private void rodarExperimentoAprendendoOption(OOSADomain domain, boolean comOptions, int experiment) throws FileNotFoundException {
+		//		SADomain domain = domain1;
+
+		//		SADomain domain = domain2;
+
+		//		SADomain domain = domain3;
+
+		String outputPath = "output1";
+		String outputPath2 = "output2";
+		String outputPath3 = "output3";
+		String outputPat4 = "output4";
+
+
+		//		List<List<Hashtable<HashableState, Action>>> options = new ArrayList<List<Hashtable <HashableState, Action>>>();
+
+		//		List<Hashtable<HashableState, Action>> options1 = new ArrayList<Hashtable <HashableState, Action>>();
+
+		//		int n = 10; //numero de vezes que irá rodar q-learning e q-learning greedy
+
+		double recompensa = 0;
+
+		int controle = 0; //variavel para controlar a quantidade de episodios
+
+		int execucoes = 1;
+
+		boolean append = false;
+
+		//aki2
+		if(mapa1){
+			if(comOptions){
+				//			new File("/Users/lti/Desktop/testComOption"+experiment+".csv").delete();
+				new File("/home/lti/experimento/testComOptionMapa1"+experiment+".csv").delete();
+			}
+			else{	
+				//			new File("/Users/lti/Desktop/testSemOption"+experiment+".csv").delete();
+				new File("/home/lti/experimento/testSemOptionMapa1"+experiment+".csv").delete();
+			}
+
+			//nomeia os arquivos de acordo com o experimento
+			//		Path source1 = Paths.get("/Users/lti/Desktop/testComOption"+experiment+".csv");
+			Path source1 = Paths.get("/home/lti/experimento/testComOptionMapa1 experimento "+experiment+ ".csv");
+			Charset charset = Charset.forName("Us-ASCII");
+
+			//		Path source2 = Paths.get("/Users/lti/Desktop/testSemOption"+experiment+".csv");
+			Path source2 = Paths.get("/home/lti/experimento/testSemOptionMapa1 experimento "+experiment+".csv");
+			Charset charset2 = Charset.forName("Us-ASCII");
+
+			//		Path auxiliar = Paths.get("/Users/lti/Desktop/testSemOptionAuxiliar.csv");
+			Path auxiliar = Paths.get("/home/lti/experimento/testSemOptionAuxiliarMapa1.csv");
+
+
+			int contadorExperimentos = 1;
+			while(contadorExperimentos <= qtdExperimentos){
+				BasicBehavior qLearningExample4 = new BasicBehavior();
+
+
+				//qLearningExample4.createAgent();
+				QLearning2 agent = new QLearning2(domain, 0.9, hashingFactory, 0., 0.2);
+
+				BufferedReader reader=null;
+				BufferedWriter writer=null;
+
+				try {
+
+					if(comOptions){
+						if(source1.toFile().exists()){
+							writer = Files.newBufferedWriter(auxiliar, charset);
+							append = true;  //se o arquivo existir, permite append no fim do arquivo
+							reader = Files.newBufferedReader(source1,charset);
+						}
+						else{
+							writer = Files.newBufferedWriter(source1, charset);
+							append = false; //se o arquivo não existir, não permite append no fim do arquivo
+						}
+					}
+					else{
+						if(source2.toFile().exists()){
+							writer = Files.newBufferedWriter(auxiliar, charset);
+							append = true; //se o arquivo existir, permite append no fim do arquivo
+							reader = Files.newBufferedReader(source2,charset);
+						}
+						else{
+							writer = Files.newBufferedWriter(source2, charset);
+							append = false; //se o arquivo não existir, não permite append no fim do arquivo
+						}
+					}
+
+					if(append){
+						String line = reader.readLine();
+						line+=",Reward\n";
+						writer.write(line);
+					}else{
+						String line = "Episodes" +     //se puser com ' é pego o caracter ascii(char)
+								',' +
+								"Reward" +
+								'\n';
+						writer.write(line);
+					}
+
+					controle=0;
+					while(controle < episodes){
+						//qLearningExample4.createAgent();
+						qLearningExample(outputPath, agent, execucoes); //loop infinito depois de 10 execuçoes(experiments)
+						//qLearningExample4.createAgent();
+						recompensa = qLearningGreedy2(outputPath2, agent, 1);
+						String line;
+						if(append){
+							line = reader.readLine();
+							line+=","+ recompensa+"\n";   //se puser, cria uma nova coluna e se puser com ' é pego o caracter ascii(char)
+						}
+						else{
+							line = controle + "," + recompensa +"\n";
+						}
+						writer.write(line);
+
+						controle+=execucoes;
+					}
+
+					writer.close();
+
+
+					if(append){
+						if(comOptions){
+							//mudar o nome do arquivo auxiliar para o arquivo desejado
+							auxiliar.toFile().renameTo(source1.toFile());
+						}
+						else{
+							//mudar o nome do arquivo auxiliar para o arquivo desejado
+							auxiliar.toFile().renameTo(source2.toFile());
+						}
+					}
+				}
+				catch (Exception e) {
+					e.printStackTrace();
+				}
+				System.out.println("\n Finish experiment "+contadorExperimentos);
+				contadorExperimentos++;
+			}
+		}
+
+
+
+		if(mapa2){
+			if(comOptions){
+				//			new File("/Users/lti/Desktop/testComOption"+experiment+".csv").delete();
+				new File("/home/lti/experimento/testComOptionMapa2 experimento "+experiment+ ".csv").delete();
+			}
+			else{	
+				//			new File("/Users/lti/Desktop/testSemOption"+experiment+".csv").delete();
+				new File("/home/lti/experimento/testSemOptionMapa2 experimento "+experiment+ ".csv").delete();
+			}
+
+			//nomeia os arquivos de acordo com o experimento
+			//		Path source1 = Paths.get("/Users/lti/Desktop/testComOption"+experiment+".csv");
+			Path source1 = Paths.get("/home/lti/experimento/testComOptionMapa2 experimento "+experiment+ ".csv");
+			Charset charset = Charset.forName("Us-ASCII");
+
+			//		Path source2 = Paths.get("/Users/lti/Desktop/testSemOption"+experiment+".csv");
+			Path source2 = Paths.get("/home/lti/experimento/testSemOptionMapa2 experimento "+experiment+ ".csv");
+			Charset charset2 = Charset.forName("Us-ASCII");
+
+			//		Path auxiliar = Paths.get("/Users/lti/Desktop/testSemOptionAuxiliar.csv");
+			Path auxiliar = Paths.get("/home/lti/experimento/testSemOptionAuxiliarMapa2.csv");
+
+
+			int contadorExperimentos = 1;
+			while(contadorExperimentos <= qtdExperimentos){
+				BasicBehavior qLearningExample4 = new BasicBehavior();
+
+
+				//qLearningExample4.createAgent();
+				QLearning2 agent = new QLearning2(domain, 0.9, hashingFactory, 0., 0.2);
+
+				BufferedReader reader=null;
+				BufferedWriter writer=null;
+
+				try {
+
+					if(comOptions){
+						if(source1.toFile().exists()){
+							writer = Files.newBufferedWriter(auxiliar, charset);
+							append = true;  //se o arquivo existir, permite append no fim do arquivo
+							reader = Files.newBufferedReader(source1,charset);
+						}
+						else{
+							writer = Files.newBufferedWriter(source1, charset);
+							append = false; //se o arquivo não existir, não permite append no fim do arquivo
+						}
+					}
+					else{
+						if(source2.toFile().exists()){
+							writer = Files.newBufferedWriter(auxiliar, charset);
+							append = true; //se o arquivo existir, permite append no fim do arquivo
+							reader = Files.newBufferedReader(source2,charset);
+						}
+						else{
+							writer = Files.newBufferedWriter(source2, charset);
+							append = false; //se o arquivo não existir, não permite append no fim do arquivo
+						}
+					}
+
+					if(append){
+						String line = reader.readLine();
+						line+=",Reward\n";
+						writer.write(line);
+					}else{
+						String line = "Episodes" +     //se puser com ' é pego o caracter ascii(char)
+								',' +
+								"Reward" +
+								'\n';
+						writer.write(line);
+					}
+
+					controle=0;
+					while(controle < episodes){
+						//qLearningExample4.createAgent();
+						qLearningExample(outputPath, agent, execucoes); //loop infinito depois de 10 execuçoes(experiments)
+						//qLearningExample4.createAgent();
+						recompensa = qLearningGreedy2(outputPath2, agent, 1);
+						String line;
+						if(append){
+							line = reader.readLine();
+							line+=","+ recompensa+"\n";   //se puser, cria uma nova coluna e se puser com ' é pego o caracter ascii(char)
+						}
+						else{
+							line = controle + "," + recompensa +"\n";
+						}
+						writer.write(line);
+
+						controle+=execucoes;
+					}
+
+					writer.close();
+
+
+					if(append){
+						if(comOptions){
+							//mudar o nome do arquivo auxiliar para o arquivo desejado
+							auxiliar.toFile().renameTo(source1.toFile());
+						}
+						else{
+							//mudar o nome do arquivo auxiliar para o arquivo desejado
+							auxiliar.toFile().renameTo(source2.toFile());
+						}
+					}
+				}
+				catch (Exception e) {
+					e.printStackTrace();
+				}
+				System.out.println("\n Finish experiment "+contadorExperimentos);
+				contadorExperimentos++;
+			}
+		}
+
+		if(mapa3){
+			if(comOptions){
+				//			new File("/Users/lti/Desktop/testComOption"+experiment+".csv").delete();
+				new File("/home/lti/experimento/testComOptionMapa3 experimento "+experiment+ ".csv").delete();
+			}
+			else{	
+				//			new File("/Users/lti/Desktop/testSemOption"+experiment+".csv").delete();
+				new File("/home/lti/experimento/testSemOptionMapa3 experimento "+experiment+ ".csv").delete();
+			}
+
+			//nomeia os arquivos de acordo com o experimento
+			//		Path source1 = Paths.get("/Users/lti/Desktop/testComOption"+experiment+".csv");
+			Path source1 = Paths.get("/home/lti/experimento/testComOptionMapa3 experimento "+experiment+ ".csv");
+			Charset charset = Charset.forName("Us-ASCII");
+
+			//		Path source2 = Paths.get("/Users/lti/Desktop/testSemOption"+experiment+".csv");
+			Path source2 = Paths.get("/home/lti/experimento/testSemOptionMapa3 experimento "+experiment+".csv");
+			Charset charset2 = Charset.forName("Us-ASCII");
+
+			//		Path auxiliar = Paths.get("/Users/lti/Desktop/testSemOptionAuxiliar.csv");
+			Path auxiliar = Paths.get("/home/lti/experimento/testSemOptionAuxiliarMapa3.csv");
+
+
+			int contadorExperimentos = 1;
+			while(contadorExperimentos <= qtdExperimentos){
+				BasicBehavior qLearningExample4 = new BasicBehavior();
+
+
+				//qLearningExample4.createAgent();
+				QLearning2 agent = new QLearning2(domain, 0.9, hashingFactory, 0., 0.2);
+
+				BufferedReader reader=null;
+				BufferedWriter writer=null;
+
+				try {
+
+					if(comOptions){
+						if(source1.toFile().exists()){
+							writer = Files.newBufferedWriter(auxiliar, charset);
+							append = true;  //se o arquivo existir, permite append no fim do arquivo
+							reader = Files.newBufferedReader(source1,charset);
+						}
+						else{
+							writer = Files.newBufferedWriter(source1, charset);
+							append = false; //se o arquivo não existir, não permite append no fim do arquivo
+						}
+					}
+					else{
+						if(source2.toFile().exists()){
+							writer = Files.newBufferedWriter(auxiliar, charset);
+							append = true; //se o arquivo existir, permite append no fim do arquivo
+							reader = Files.newBufferedReader(source2,charset);
+						}
+						else{
+							writer = Files.newBufferedWriter(source2, charset);
+							append = false; //se o arquivo não existir, não permite append no fim do arquivo
+						}
+					}
+
+					if(append){
+						String line = reader.readLine();
+						line+=",Reward\n";
+						writer.write(line);
+					}else{
+						String line = "Episodes" +     //se puser com ' é pego o caracter ascii(char)
+								',' +
+								"Reward" +
+								'\n';
+						writer.write(line);
+					}
+
+					controle=0;
+					while(controle < episodes){
+						//qLearningExample4.createAgent();
+						qLearningExample(outputPath, agent, execucoes); //loop infinito depois de 10 execuçoes(experiments)
+						//qLearningExample4.createAgent();
+						recompensa = qLearningGreedy2(outputPath2, agent, 1);
+						String line;
+						if(append){
+							line = reader.readLine();
+							line+=","+ recompensa+"\n";   //se puser, cria uma nova coluna e se puser com ' é pego o caracter ascii(char)
+						}
+						else{
+							line = controle + "," + recompensa +"\n";
+						}
+						writer.write(line);
+
+						controle+=execucoes;
+					}
+
+					writer.close();
+
+
+					if(append){
+						if(comOptions){
+							//mudar o nome do arquivo auxiliar para o arquivo desejado
+							auxiliar.toFile().renameTo(source1.toFile());
+						}
+						else{
+							//mudar o nome do arquivo auxiliar para o arquivo desejado
+							auxiliar.toFile().renameTo(source2.toFile());
+						}
+					}
+				}
+				catch (Exception e) {
+					e.printStackTrace();
+				}
+				System.out.println("\n Finish experiment "+contadorExperimentos);
+				contadorExperimentos++;
+			}
+		}
+
+
+		if(mapa4){
+			if(comOptions){
+				//			new File("/Users/lti/Desktop/testComOption"+experiment+".csv").delete();
+				new File("/home/lti/experimento/testComOptionMapa4"+experiment+".csv").delete();
+			}
+			else{	
+				//			new File("/Users/lti/Desktop/testSemOption"+experiment+".csv").delete();
+				new File("/home/lti/experimento/testSemOptionMapa4"+experiment+".csv").delete();
+			}
+
+			//nomeia os arquivos de acordo com o experimento
+			//		Path source1 = Paths.get("/Users/lti/Desktop/testComOption"+experiment+".csv");
+			Path source1 = Paths.get("/home/lti/experimento/testComOptionMapa4 experimento "+experiment+ ".csv");
+			Charset charset = Charset.forName("Us-ASCII");
+
+			//		Path source2 = Paths.get("/Users/lti/Desktop/testSemOption"+experiment+".csv");
+			Path source2 = Paths.get("/home/lti/experimento/testSemOptionMapa4 experimento "+experiment+".csv");
+			Charset charset2 = Charset.forName("Us-ASCII");
+
+			//		Path auxiliar = Paths.get("/Users/lti/Desktop/testSemOptionAuxiliar.csv");
+			Path auxiliar = Paths.get("/home/lti/experimento/testSemOptionAuxiliarMapa4.csv");
+
+
+			int contadorExperimentos = 1;
+			while(contadorExperimentos <= qtdExperimentos){
+				BasicBehavior qLearningExample4 = new BasicBehavior();
+
+
+				//qLearningExample4.createAgent();
+				QLearning2 agent = new QLearning2(domain, 0.9, hashingFactory, 0., 0.2);
+
+				BufferedReader reader=null;
+				BufferedWriter writer=null;
+
+				try {
+
+					if(comOptions){
+						if(source1.toFile().exists()){
+							writer = Files.newBufferedWriter(auxiliar, charset);
+							append = true;  //se o arquivo existir, permite append no fim do arquivo
+							reader = Files.newBufferedReader(source1,charset);
+						}
+						else{
+							writer = Files.newBufferedWriter(source1, charset);
+							append = false; //se o arquivo não existir, não permite append no fim do arquivo
+						}
+					}
+					else{
+						if(source2.toFile().exists()){
+							writer = Files.newBufferedWriter(auxiliar, charset);
+							append = true; //se o arquivo existir, permite append no fim do arquivo
+							reader = Files.newBufferedReader(source2,charset);
+						}
+						else{
+							writer = Files.newBufferedWriter(source2, charset);
+							append = false; //se o arquivo não existir, não permite append no fim do arquivo
+						}
+					}
+
+					if(append){
+						String line = reader.readLine();
+						line+=",Reward\n";
+						writer.write(line);
+					}else{
+						String line = "Episodes" +     //se puser com ' é pego o caracter ascii(char)
+								',' +
+								"Reward" +
+								'\n';
+						writer.write(line);
+					}
+
+					controle=0;
+					while(controle < episodes){
+						//qLearningExample4.createAgent();
+						qLearningExample(outputPath, agent, execucoes); //loop infinito depois de 10 execuçoes(experiments)
+						//qLearningExample4.createAgent();
+						recompensa = qLearningGreedy2(outputPath2, agent, 1);
+						String line;
+						if(append){
+							line = reader.readLine();
+							line+=","+ recompensa+"\n";   //se puser, cria uma nova coluna e se puser com ' é pego o caracter ascii(char)
+						}
+						else{
+							line = controle + "," + recompensa +"\n";
+						}
+						writer.write(line);
+
+						controle+=execucoes;
+					}
+
+					writer.close();
+
+
+					if(append){
+						if(comOptions){
+							//mudar o nome do arquivo auxiliar para o arquivo desejado
+							auxiliar.toFile().renameTo(source1.toFile());
+						}
+						else{
+							//mudar o nome do arquivo auxiliar para o arquivo desejado
+							auxiliar.toFile().renameTo(source2.toFile());
+						}
+					}
+				}
+				catch (Exception e) {
+					e.printStackTrace();
+				}
+				System.out.println("\n Finish experiment "+contadorExperimentos);
+				contadorExperimentos++;
+			}
+		}
+
+
+		if(mapa5){
+			if(comOptions){
+				//			new File("/Users/lti/Desktop/testComOption"+experiment+".csv").delete();
+				new File("/home/lti/experimento/testComOptionMapa5 experimento "+experiment+ ".csv").delete();
+			}
+			else{	
+				//			new File("/Users/lti/Desktop/testSemOption"+experiment+".csv").delete();
+				new File("/home/lti/experimento/testSemOptionMapa5 experimento "+experiment+ ".csv").delete();
+			}
+
+			//nomeia os arquivos de acordo com o experimento
+			//		Path source1 = Paths.get("/Users/lti/Desktop/testComOption"+experiment+".csv");
+			Path source1 = Paths.get("/home/lti/experimento/testComOptionMapa5 experimento "+experiment+ ".csv");
+			Charset charset = Charset.forName("Us-ASCII");
+
+			//		Path source2 = Paths.get("/Users/lti/Desktop/testSemOption"+experiment+".csv");
+			Path source2 = Paths.get("/home/lti/experimento/testSemOptionMapa5 experimento "+experiment+".csv");
+			Charset charset2 = Charset.forName("Us-ASCII");
+
+			//		Path auxiliar = Paths.get("/Users/lti/Desktop/testSemOptionAuxiliar.csv");
+			Path auxiliar = Paths.get("/home/lti/experimento/testSemOptionAuxiliarMapa5.csv");
+
+
+			int contadorExperimentos = 1;
+			while(contadorExperimentos <= qtdExperimentos){
+				BasicBehavior qLearningExample4 = new BasicBehavior();
+
+
+				//qLearningExample4.createAgent();
+				QLearning2 agent = new QLearning2(domain, 0.9, hashingFactory, 0., 0.2);
+
+				BufferedReader reader=null;
+				BufferedWriter writer=null;
+
+				try {
+
+					if(comOptions){
+						if(source1.toFile().exists()){
+							writer = Files.newBufferedWriter(auxiliar, charset);
+							append = true;  //se o arquivo existir, permite append no fim do arquivo
+							reader = Files.newBufferedReader(source1,charset);
+						}
+						else{
+							writer = Files.newBufferedWriter(source1, charset);
+							append = false; //se o arquivo não existir, não permite append no fim do arquivo
+						}
+					}
+					else{
+						if(source2.toFile().exists()){
+							writer = Files.newBufferedWriter(auxiliar, charset);
+							append = true; //se o arquivo existir, permite append no fim do arquivo
+							reader = Files.newBufferedReader(source2,charset);
+						}
+						else{
+							writer = Files.newBufferedWriter(source2, charset);
+							append = false; //se o arquivo não existir, não permite append no fim do arquivo
+						}
+					}
+
+					if(append){
+						String line = reader.readLine();
+						line+=",Reward\n";
+						writer.write(line);
+					}else{
+						String line = "Episodes" +     //se puser com ' é pego o caracter ascii(char)
+								',' +
+								"Reward" +
+								'\n';
+						writer.write(line);
+					}
+
+					controle=0;
+					while(controle < episodes){
+						//qLearningExample4.createAgent();
+						qLearningExample(outputPath, agent, execucoes); //loop infinito depois de 10 execuçoes(experiments)
+						//qLearningExample4.createAgent();
+						recompensa = qLearningGreedy2(outputPath2, agent, 1);
+						String line;
+						if(append){
+							line = reader.readLine();
+							line+=","+ recompensa+"\n";   //se puser, cria uma nova coluna e se puser com ' é pego o caracter ascii(char)
+						}
+						else{
+							line = controle + "," + recompensa +"\n";
+						}
+						writer.write(line);
+
+						controle+=execucoes;
+					}
+
+					writer.close();
+
+
+					if(append){
+						if(comOptions){
+							//mudar o nome do arquivo auxiliar para o arquivo desejado
+							auxiliar.toFile().renameTo(source1.toFile());
+						}
+						else{
+							//mudar o nome do arquivo auxiliar para o arquivo desejado
+							auxiliar.toFile().renameTo(source2.toFile());
+						}
+					}
+				}
+				catch (Exception e) {
+					e.printStackTrace();
+				}
+				System.out.println("\n Finish experiment "+contadorExperimentos);
+				contadorExperimentos++;
+			}
+		}
+
+
+		if(mapa6){
+			if(comOptions){
+				//			new File("/Users/lti/Desktop/testComOption"+experiment+".csv").delete();
+				new File("/home/lti/experimento/testSemOptionMapa6"+experiment+".csv").delete();
+			}
+			else{	
+				//			new File("/Users/lti/Desktop/testSemOption"+experiment+".csv").delete();
+				new File("/home/lti/experimento/testSemOptionMapa6"+experiment+".csv").delete();
+			}
+
+			//nomeia os arquivos de acordo com o experimento
+			//		Path source1 = Paths.get("/Users/lti/Desktop/testComOption"+experiment+".csv");
+			Path source1 = Paths.get("/home/lti/experimento/testComOptionMapa6 experimento "+experiment+ ".csv");
+			Charset charset = Charset.forName("Us-ASCII");
+
+			//		Path source2 = Paths.get("/Users/lti/Desktop/testSemOption"+experiment+".csv");
+			Path source2 = Paths.get("/home/lti/experimento/testSemOptionMapa6 experimento "+experiment+".csv");
+			Charset charset2 = Charset.forName("Us-ASCII");
+
+			//		Path auxiliar = Paths.get("/Users/lti/Desktop/testSemOptionAuxiliar.csv");
+			Path auxiliar = Paths.get("/home/lti/experimento/testSemOptionAuxiliarMapa6.csv");
+
+
+			int contadorExperimentos = 1;
+			while(contadorExperimentos <= qtdExperimentos){
+				BasicBehavior qLearningExample4 = new BasicBehavior();
+
+
+				//qLearningExample4.createAgent();
+				QLearning2 agent = new QLearning2(domain, 0.9, hashingFactory, 0., 0.2);
+
+				BufferedReader reader=null;
+				BufferedWriter writer=null;
+
+				try {
+
+					if(comOptions){
+						if(source1.toFile().exists()){
+							writer = Files.newBufferedWriter(auxiliar, charset);
+							append = true;  //se o arquivo existir, permite append no fim do arquivo
+							reader = Files.newBufferedReader(source1,charset);
+						}
+						else{
+							writer = Files.newBufferedWriter(source1, charset);
+							append = false; //se o arquivo não existir, não permite append no fim do arquivo
+						}
+					}
+					else{
+						if(source2.toFile().exists()){
+							writer = Files.newBufferedWriter(auxiliar, charset);
+							append = true; //se o arquivo existir, permite append no fim do arquivo
+							reader = Files.newBufferedReader(source2,charset);
+						}
+						else{
+							writer = Files.newBufferedWriter(source2, charset);
+							append = false; //se o arquivo não existir, não permite append no fim do arquivo
+						}
+					}
+
+					if(append){
+						String line = reader.readLine();
+						line+=",Reward\n";
+						writer.write(line);
+					}else{
+						String line = "Episodes" +     //se puser com ' é pego o caracter ascii(char)
+								',' +
+								"Reward" +
+								'\n';
+						writer.write(line);
+					}
+
+					controle=0;
+					while(controle < episodes){
+						//qLearningExample4.createAgent();
+						qLearningExample(outputPath, agent, execucoes); //loop infinito depois de 10 execuçoes(experiments)
+						//qLearningExample4.createAgent();
+						//recompensa = qLearningGreedy2(outputPath2, agent, 1);
+						String line;
+						if(append){
+							line = reader.readLine();
+							line+=","+ recompensa+"\n";   //se puser, cria uma nova coluna e se puser com ' é pego o caracter ascii(char)
+						}
+						else{
+							line = controle + "," + recompensa +"\n";
+						}
+						writer.write(line);
+
+						controle+=execucoes;
+					}
+
+					writer.close();
+
+
+					if(append){
+						if(comOptions){
+							//mudar o nome do arquivo auxiliar para o arquivo desejado
+							auxiliar.toFile().renameTo(source1.toFile());
+						}
+						else{
+							//mudar o nome do arquivo auxiliar para o arquivo desejado
+							auxiliar.toFile().renameTo(source2.toFile());
+						}
+					}
+				}
+				catch (Exception e) {
+					e.printStackTrace();
+				}
+				System.out.println("\n Finish experiment "+contadorExperimentos);
+				contadorExperimentos++;
+			}
+		}
+
+
+
+
+
+
+
+
+
+	}//fim metodo
 
 
 
@@ -1303,10 +2082,10 @@ public class BasicBehavior<idx> {
 
 
 	//visualizar experimento1
-//	public void visualize(String outputpath){
-//		Visualizer v = GridWorldVisualizer2.getVisualizer(gwdg.getMap());
-//		new EpisodeSequenceVisualizer(v, domain1, outputpath);
-//	}
+	//	public void visualize(String outputpath){
+	//		Visualizer v = GridWorldVisualizer2.getVisualizer(gwdg.getMap());
+	//		new EpisodeSequenceVisualizer(v, domain1, outputpath);
+	//	}
 
 	//visualizar experimento2
 	//	public void visualize(String outputpath2){
@@ -2005,4 +2784,5 @@ public class BasicBehavior<idx> {
 
 
 }
+
 
