@@ -97,8 +97,8 @@ public class BasicBehavior<idx> {
 
 
 	//SEMPRE DEIXAR ESSAS 2 VARIAVEIS COM VALORES IGUAIS!!!
-	int episodes = 100; //quantidade de episodios utilizados para geraçao das politicas otimas
-	int controleEpisodes = 100;    //quantidade de rodadas do experimento(gerar excel)
+	int episodes = 1000; //quantidade de episodios utilizados para geraçao das politicas otimas
+	int controleEpisodes = 1000;    //quantidade de rodadas do experimento(gerar excel)
 
 	int nOptions = 3; //numero desejado de options (O) -- se colocar numero diferente de 3 ta dando pau
 	int contadorPowerSet = 1;  //contador de politicas geradas no powerset (ps)
@@ -224,7 +224,7 @@ public class BasicBehavior<idx> {
 				//salvar as options aprendidas para cada mapa
 				int contaOption = 1;
 				for(Option opt :opt1){
-					((MOOption) opt).salvaArquivo("/home/lti/experimento/learnedOption "+contaOption+" mapa"+mapa+".csv");
+					((MOOption) opt).salvaArquivo("/home/lti/experimento/learnedOption"+contaOption+"mapa"+mapa+".csv");
 					contaOption++;
 				}
 
@@ -254,7 +254,13 @@ public class BasicBehavior<idx> {
 
 		while(controleMapa <= qtdMapasTotal){
 			criaExperimento();
+			
+			String[] caminhos = {"/home/lti/experimento/learnedOption1mapa1.csv","/home/lti/experimento/learnedOption2mapa1.csv","/home/lti/experimento/learnedOption3mapa1.csv","/home/lti/experimento/learnedOption1mapa2.csv","/home/lti/experimento/learnedOption2mapa2.csv","/home/lti/experimento/learnedOption3mapa3.csv","/home/lti/experimento/learnedOption1mapa4.csv","/home/lti/experimento/learnedOption2mapa4.csv","/home/lti/experimento/learnedOption3mapa4.csv","/home/lti/experimento/learnedOption1mapa5.csv","/home/lti/experimento/learnedOption2mapa5.csv","/home/lti/experimento/learnedOption3mapa5.csv","/home/lti/experimento/learnedOption1mapa6.csv","/home/lti/experimento/learnedOption2mapa6.csv","/home/lti/experimento/learnedOption3mapa6.csv"}; 
+			List<Option> opts = new ArrayList<Option>();
+			Option mondo =new MONonDetOption("option", caminhos, qLearningExample.domain1.getActionTypes(),env.getStateGenerator().generateState());
+			opts.add(mondo);
 			//roda experimento com options aprendidas no novo domínio
+			qLearningExample.domain1.addActionTypes(getActionTypesFromOption(opts));
 			qLearningExample.rodarExperimentoSemAprenderOption(qLearningExample.domain1,true,1);
 
 			//roda experimento sem options para efeito de comparação
@@ -343,6 +349,12 @@ public class BasicBehavior<idx> {
 		//				//			}
 		//			}
 
+	}
+
+
+	private static Object MONonDetOption(String string, String[] caminhos, List<ActionType> actionTypes) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

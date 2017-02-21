@@ -13,6 +13,7 @@ import java.util.Random;
 import burlap.behavior.policy.Policy;
 import burlap.mdp.auxiliary.stateconditiontest.StateConditionTest;
 import burlap.mdp.core.action.Action;
+import burlap.mdp.core.action.ActionType;
 import burlap.mdp.core.state.State;
 
 /**
@@ -21,15 +22,20 @@ import burlap.mdp.core.state.State;
  */
 public class MONonDetOption extends MOOption {
 	Hashtable<List<Integer>, NodeOpt> option;
+	List<Action> allActions;
 	/**
 	 * Creates a MOOption from files describing individual options
 	 * @param name Name of the option
 	 * @param files files to read from
+	 * @param list 
 	 * @param hasher HashableStateFactory to be used
 	 */
-	public MONonDetOption(String name, String[] files,List<Action> allActions){
+	public MONonDetOption(String name, String[] files,List<ActionType> actionTypes, State state){
 		super(name,null,null);
-		this.option = readFromFiles(files,allActions);
+		this.allActions = new ArrayList<Action>();
+		for(ActionType act:actionTypes)
+			this.allActions.addAll(act.allApplicableActions(state));
+		this.option = readFromFiles(files);
 		super.setPolicy(new NonDetExecutaOption(option));
 		StateConditionTest initiationConditions = new StateConditionClass(true,option);
 		super.setInitiationTest(initiationConditions);
@@ -41,11 +47,14 @@ public class MONonDetOption extends MOOption {
 	/**
 	 * Read the option files and combines them
 	 * @param files
+	 * @param actionTypes 
 	 * @return
 	 */
-	private Hashtable<List<Integer>, NodeOpt> readFromFiles(String[] files,List<Action> allActions) {
+	private Hashtable<List<Integer>, NodeOpt> readFromFiles(String[] files) {
 		Hashtable<List<Integer>,Hashtable<String,Integer>> counts = new Hashtable<List<Integer>,Hashtable<String,Integer>>();
 		Hashtable<List<Integer>, NodeOpt> retorno = new Hashtable<List<Integer>, NodeOpt>();
+		
+		
 		try{
 			for(String file: files){
 				BufferedReader br = new BufferedReader(new FileReader(file));
@@ -64,7 +73,7 @@ public class MONonDetOption extends MOOption {
 					if (!counts.containsKey(state)){
 						//including one entry for each action
 						Hashtable<String,Integer> hash = new Hashtable<String,Integer>();
-						for(Action a: allActions){
+						for(Action a: this.allActions){
 							hash.put(a.actionName(),0);
 						}
 
@@ -95,10 +104,10 @@ public class MONonDetOption extends MOOption {
 			for(String action : count.keySet()){
 				int i=0;
 				//Find action
-				while(!allActions.get(i).equals(action))
+				while(!allActions.get(i).actionName().equals(action))
 					i++;
 				//MERGE OPTIONS
-				float prob = (float) (count.get(action) + 1) / sum + allActions.size();
+				float prob = (float) (count.get(action) + 1) / (sum + allActions.size());
 				node.probs.set(i, prob);
 			}
 			retorno.put(state, node);
