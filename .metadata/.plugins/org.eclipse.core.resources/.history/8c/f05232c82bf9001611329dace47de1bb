@@ -290,19 +290,6 @@ public class BasicBehavior<idx> {
 			while(controleMapa <= qtdMapasTotal){
 				criaExperimento();
 
-				
-				if(expSemOption){
-					//recompensaMapaAuxSemOption.clear();
-					recompensaMapaAuxSemOption.add(new ArrayList<Double>());
-
-					//roda experimento sem options para efeito de comparação
-					qLearningExample2.rodarExperimentoComOption(qLearningExample.domain1,false,1, recompensaMapaAuxSemOption,controleMapa-7); //dominio, true = comOptions e false = semOptions, numero do experimento
-
-					//recompensaMapaSemOption.addAll(indice, recompensaMapaAuxComOption);
-
-					//recompensaGeralSemOption.addAll(indice, recompensaMapaAuxComOption);
-				}
-				
 
 				if(expComOption){
 					String[] caminhos = {"/home/lti/experimento/learnedOption1mapa1.csv","/home/lti/experimento/learnedOption2mapa1.csv","/home/lti/experimento/learnedOption3mapa1.csv","/home/lti/experimento/learnedOption1mapa2.csv","/home/lti/experimento/learnedOption2mapa2.csv","/home/lti/experimento/learnedOption3mapa3.csv","/home/lti/experimento/learnedOption1mapa4.csv","/home/lti/experimento/learnedOption2mapa4.csv","/home/lti/experimento/learnedOption3mapa4.csv","/home/lti/experimento/learnedOption1mapa5.csv","/home/lti/experimento/learnedOption2mapa5.csv","/home/lti/experimento/learnedOption3mapa5.csv","/home/lti/experimento/learnedOption1mapa6.csv","/home/lti/experimento/learnedOption2mapa6.csv","/home/lti/experimento/learnedOption3mapa6.csv"}; 
@@ -332,7 +319,17 @@ public class BasicBehavior<idx> {
 				}
 
 
-				
+				if(expSemOption){
+					//recompensaMapaAuxSemOption.clear();
+					recompensaMapaAuxSemOption.add(new ArrayList<Double>());
+
+					//roda experimento sem options para efeito de comparação
+					qLearningExample2.rodarExperimentoComOption(qLearningExample.domain1,false,1, recompensaMapaAuxSemOption,controleMapa-7); //dominio, true = comOptions e false = semOptions, numero do experimento
+
+					//recompensaMapaSemOption.addAll(indice, recompensaMapaAuxComOption);
+
+					//recompensaGeralSemOption.addAll(indice, recompensaMapaAuxComOption);
+				}
 
 				controleMapa++;//controle de qual mapa está sendo explorado
 			}

@@ -1403,3 +1403,11 @@ org.eclipse.core.runtime.CoreException: Launch configuration BasicBehavior (1) r
 2017-02-22 13:36:19,986 [Worker-117] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /home/lti/gitProjects/TiRL_Options/burlap3/src/main/resources
 2017-02-22 13:36:19,987 [Worker-117] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
 2017-02-22 13:36:19,988 [Worker-117] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /home/lti/gitProjects/TiRL_Options/burlap3/src/test/resources
+2017-02-22 15:10:33,614 [Worker-149] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2017-02-22 15:10:33,615 [Worker-149] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /home/lti/gitProjects/TiRL_Options/burlap3/src/main/resources
+2017-02-22 15:10:33,616 [Worker-149] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2017-02-22 15:10:33,616 [Worker-149] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /home/lti/gitProjects/TiRL_Options/burlap3/src/test/resources
+2017-02-22 15:21:52,088 [Worker-159] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2017-02-22 15:21:52,089 [Worker-159] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /home/lti/gitProjects/TiRL_Options/burlap3/src/main/resources
+2017-02-22 15:21:52,090 [Worker-159] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2017-02-22 15:21:52,090 [Worker-159] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /home/lti/gitProjects/TiRL_Options/burlap3/src/test/resources
