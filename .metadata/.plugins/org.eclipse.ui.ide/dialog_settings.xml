@@ -5,6 +5,7 @@
 		<item value="false" key="WizardProjectsImportPage.STORE_COPY_PROJECT_ID"/>
 		<item value="false" key="WizardProjectsImportPage.STORE_ARCHIVE_SELECTED"/>
 		<list key="WizardProjectsImportPage.STORE_DIRECTORIES">
+			<item value="/home/lti/gitProjects/TiRL_Options/burlap3"/>
 			<item value="/home/lti/gitProjects/TiRL_Options"/>
 			<item value="/home/lti/workspace/burlap3"/>
 		</list>

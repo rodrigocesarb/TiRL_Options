@@ -3,7 +3,7 @@ package ExperimentosAAMAS;
 import java.util.ArrayList;
 import java.util.List;
 
-import ExperimentosKDMile.GridWorldDomain2.AtGoldPF;
+
 import burlap.mdp.core.action.Action;
 import burlap.mdp.core.state.State;
 import burlap.mdp.singleagent.model.RewardFunction;

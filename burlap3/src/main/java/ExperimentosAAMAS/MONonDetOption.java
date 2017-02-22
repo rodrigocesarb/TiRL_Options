@@ -33,8 +33,9 @@ public class MONonDetOption extends MOOption {
 	public MONonDetOption(String name, String[] files,List<ActionType> actionTypes, State state){
 		super(name,null,null);
 		this.allActions = new ArrayList<Action>();
-		for(ActionType act:actionTypes)
+		for(ActionType act:actionTypes){
 			this.allActions.addAll(act.allApplicableActions(state));
+		}
 		this.option = readFromFiles(files);
 		super.setPolicy(new NonDetExecutaOption(option));
 		StateConditionTest initiationConditions = new StateConditionClass(true,option);
@@ -53,8 +54,8 @@ public class MONonDetOption extends MOOption {
 	private Hashtable<List<Integer>, NodeOpt> readFromFiles(String[] files) {
 		Hashtable<List<Integer>,Hashtable<String,Integer>> counts = new Hashtable<List<Integer>,Hashtable<String,Integer>>();
 		Hashtable<List<Integer>, NodeOpt> retorno = new Hashtable<List<Integer>, NodeOpt>();
-		
-		
+
+
 		try{
 			for(String file: files){
 				BufferedReader br = new BufferedReader(new FileReader(file));
@@ -87,7 +88,7 @@ public class MONonDetOption extends MOOption {
 				}
 			}
 		}catch(Exception e){e.printStackTrace();}
-		
+
 		//Agregate all states in the option
 		for (List<Integer> state : counts.keySet()){
 			//Initiating options
@@ -96,7 +97,7 @@ public class MONonDetOption extends MOOption {
 			for(int i=0;i<allActions.size();i++){
 				node.probs.add(0f);
 			}
-			
+
 			Hashtable<String,Integer> count = counts.get(state);
 			int sum = 0;
 			for (String ele : count.keySet())
@@ -111,9 +112,9 @@ public class MONonDetOption extends MOOption {
 				node.probs.set(i, prob);
 			}
 			retorno.put(state, node);
-			
+
 		}
-		
+
 		return retorno;
 	}
 

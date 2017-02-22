@@ -121,7 +121,7 @@ public class SubgoalOption2 implements Option {
 	//add argumentos (hashtable)
 	@Override
 	public double probabilityOfTermination(State s, Episode history) {
-		if(terminationStates.satisfies(s) || !policy.definedFor(s)){
+		if(terminationStates.satisfies(s, null) || !policy.definedFor(s)){
 			return 1.;
 		}
 		return 0.;
@@ -131,7 +131,7 @@ public class SubgoalOption2 implements Option {
 	//add argumentos (hashtable)
 	@Override
 	public boolean inInitiationSet(State s) {
-		return initiationTest.satisfies(s);
+		return initiationTest.satisfies(s, null);
 	}
 
 
