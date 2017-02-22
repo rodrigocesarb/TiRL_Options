@@ -1,0 +1,10 @@
+action,x,y
+west,1,9
+north,3,7
+west,2,9
+south,2,3
+north,0,10
+east,3,3
+north,3,8
+west,0,9
+north,3,5

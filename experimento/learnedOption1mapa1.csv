@@ -1,0 +1,10 @@
+action,x,y
+east,8,8
+east,9,8
+north,3,7
+east,5,8
+north,9,10
+east,6,8
+east,10,10
+north,9,9
+north,3,8
