@@ -159,11 +159,11 @@ public class MONonDetOption extends MOOption {
 
 			if(option.containsKey(state)){
 				//Select actions with the specified prob
-				float rGen = r.nextFloat();
+				float rGen = r.nextFloat()+0.00001f;
 				int i = -1; float sum = 0;
 
 				List<Float> probs = this.option.get(state).probs;
-				while(rGen>=sum){
+				while(rGen>sum){
 					i++;
 					sum+=probs.get(i);
 				}

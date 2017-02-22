@@ -163,11 +163,10 @@ public class MONonDetOption extends MOOption {
 				int i = -1; float sum = 0;
 
 				List<Float> probs = this.option.get(state).probs;
-				while(rGen>=sum){
+				while(rGen>sum){
 					i++;
 					sum+=probs.get(i);
 				}
-
 				return this.option.get(state).actions.get(i);
 
 			}

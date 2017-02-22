@@ -344,7 +344,6 @@ public class BasicBehavior<idx> {
 			if(expSemOption){
 				salvaResultado(false,recompensaMapaAuxSemOption);
 			}
-			System.out.println("\n\n Acabou o experimento"+numExp+"\n\n");
 			numExp++;
 		}
 

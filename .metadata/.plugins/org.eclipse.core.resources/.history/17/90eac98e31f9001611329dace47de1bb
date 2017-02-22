@@ -135,7 +135,7 @@ public class BasicBehavior<idx> {
 
 	//variaveis para controlar a quantidade de experimentos que acontecerão
 
-	static int qtdExperimentos = 1000;
+	static int qtdExperimentos = 100;
 	static int mapa = 0;
 
 	static int indiceArrayListComOption = 0;
@@ -344,7 +344,6 @@ public class BasicBehavior<idx> {
 			if(expSemOption){
 				salvaResultado(false,recompensaMapaAuxSemOption);
 			}
-			System.out.println("\n\n Acabou o experimento"+numExp+"\n\n");
 			numExp++;
 		}
 

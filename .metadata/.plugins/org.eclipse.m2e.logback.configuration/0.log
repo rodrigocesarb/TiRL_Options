@@ -1411,3 +1411,47 @@ org.eclipse.core.runtime.CoreException: Launch configuration BasicBehavior (1) r
 2017-02-22 15:21:52,089 [Worker-159] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /home/lti/gitProjects/TiRL_Options/burlap3/src/main/resources
 2017-02-22 15:21:52,090 [Worker-159] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
 2017-02-22 15:21:52,090 [Worker-159] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /home/lti/gitProjects/TiRL_Options/burlap3/src/test/resources
+2017-02-22 15:37:01,058 [Worker-164] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2017-02-22 15:37:01,059 [Worker-164] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /home/lti/gitProjects/TiRL_Options/burlap3/src/main/resources
+2017-02-22 15:37:01,060 [Worker-164] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2017-02-22 15:37:01,060 [Worker-164] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /home/lti/gitProjects/TiRL_Options/burlap3/src/test/resources
+2017-02-22 15:43:38,438 [Worker-167] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2017-02-22 15:43:38,438 [Worker-167] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /home/lti/gitProjects/TiRL_Options/burlap3/src/main/resources
+2017-02-22 15:43:38,439 [Worker-167] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2017-02-22 15:43:38,439 [Worker-167] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /home/lti/gitProjects/TiRL_Options/burlap3/src/test/resources
+2017-02-22 15:43:51,071 [Worker-168] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2017-02-22 15:43:51,072 [Worker-168] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /home/lti/gitProjects/TiRL_Options/burlap3/src/main/resources
+2017-02-22 15:43:51,072 [Worker-168] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2017-02-22 15:43:51,073 [Worker-168] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /home/lti/gitProjects/TiRL_Options/burlap3/src/test/resources
+2017-02-22 15:49:12,274 [Worker-170] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2017-02-22 15:49:12,275 [Worker-170] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /home/lti/gitProjects/TiRL_Options/burlap3/src/main/resources
+2017-02-22 15:49:12,275 [Worker-170] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2017-02-22 15:49:12,276 [Worker-170] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /home/lti/gitProjects/TiRL_Options/burlap3/src/test/resources
+2017-02-22 15:53:01,553 [Worker-169] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2017-02-22 15:53:01,553 [Worker-169] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /home/lti/gitProjects/TiRL_Options/burlap3/src/main/resources
+2017-02-22 15:53:01,554 [Worker-169] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2017-02-22 15:53:01,554 [Worker-169] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /home/lti/gitProjects/TiRL_Options/burlap3/src/test/resources
+2017-02-22 15:58:35,230 [Worker-175] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2017-02-22 15:58:35,230 [Worker-175] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /home/lti/gitProjects/TiRL_Options/burlap3/src/main/resources
+2017-02-22 15:58:35,232 [Worker-175] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2017-02-22 15:58:35,233 [Worker-175] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /home/lti/gitProjects/TiRL_Options/burlap3/src/test/resources
+2017-02-22 16:03:12,764 [Worker-177] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2017-02-22 16:03:12,764 [Worker-177] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /home/lti/gitProjects/TiRL_Options/burlap3/src/main/resources
+2017-02-22 16:03:12,765 [Worker-177] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2017-02-22 16:03:12,766 [Worker-177] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /home/lti/gitProjects/TiRL_Options/burlap3/src/test/resources
+2017-02-22 16:21:03,342 [Worker-178] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2017-02-22 16:21:03,390 [Worker-178] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /home/lti/gitProjects/TiRL_Options/burlap3/src/main/resources
+2017-02-22 16:21:03,391 [Worker-178] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2017-02-22 16:21:03,396 [Worker-178] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /home/lti/gitProjects/TiRL_Options/burlap3/src/test/resources
+2017-02-22 16:22:47,420 [Worker-167] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2017-02-22 16:22:47,421 [Worker-167] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /home/lti/gitProjects/TiRL_Options/burlap3/src/main/resources
+2017-02-22 16:22:47,422 [Worker-167] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2017-02-22 16:22:47,422 [Worker-167] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /home/lti/gitProjects/TiRL_Options/burlap3/src/test/resources
+2017-02-22 16:23:44,021 [Worker-179] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2017-02-22 16:23:44,021 [Worker-179] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /home/lti/gitProjects/TiRL_Options/burlap3/src/main/resources
+2017-02-22 16:23:44,023 [Worker-179] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2017-02-22 16:23:44,023 [Worker-179] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /home/lti/gitProjects/TiRL_Options/burlap3/src/test/resources
+2017-02-22 16:23:56,150 [Worker-179] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2017-02-22 16:23:56,150 [Worker-179] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /home/lti/gitProjects/TiRL_Options/burlap3/src/main/resources
+2017-02-22 16:23:56,151 [Worker-179] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2017-02-22 16:23:56,151 [Worker-179] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /home/lti/gitProjects/TiRL_Options/burlap3/src/test/resources
