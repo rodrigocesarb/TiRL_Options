@@ -717,7 +717,7 @@ public class BasicBehavior<idx> {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-		//System.out.println("\n Finish Map "+controleMapa);
+		System.out.println("\n Finish Map "+controleMapa);
 	}
 
 	//fim metodo
@@ -1631,7 +1631,7 @@ public class BasicBehavior<idx> {
 			agentState = new GridAgent2(x,y,"agent");
 		}
 
-//		System.out.println("Estado inicial do agente:("+x+","+y+")");
+		System.out.println("Estado inicial do agente:("+x+","+y+")");
 		visual++;
 		return agentState;
 	}

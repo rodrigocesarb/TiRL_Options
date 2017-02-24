@@ -1,10 +1,11 @@
 action,x,y
-east,9,4
-west,7,8
+east,1,2
+east,4,3
 north,9,6
-south,7,7
+east,5,3
 east,10,6
-south,7,4
+north,7,4
 north,9,5
+east,6,3
 east,8,4
-south,7,6
+east,2,3

@@ -686,7 +686,7 @@ public class BasicBehavior<idx> {
 				//qLearningExample4.createAgent();
 
 				//					recompensaEpisodio[controle]+= recompensa;
-				if(controle % 10 == 0){
+				if(controle/10 = 0){
 					if(comOptions){
 						recompensa = qLearningGreedy2Aval(outputPathx, agent, 1);
 						recompensaEpisodio.get(numMapa).add(recompensa);
@@ -717,7 +717,7 @@ public class BasicBehavior<idx> {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-		//System.out.println("\n Finish Map "+controleMapa);
+		System.out.println("\n Finish Map "+controleMapa);
 	}
 
 	//fim metodo
@@ -1631,7 +1631,7 @@ public class BasicBehavior<idx> {
 			agentState = new GridAgent2(x,y,"agent");
 		}
 
-//		System.out.println("Estado inicial do agente:("+x+","+y+")");
+		System.out.println("Estado inicial do agente:("+x+","+y+")");
 		visual++;
 		return agentState;
 	}

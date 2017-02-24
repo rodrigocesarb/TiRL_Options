@@ -316,8 +316,8 @@ public class BasicBehavior<idx> {
 					//recompensaGeralComOption.addAll(indice, recompensaMapaAuxComOption);
 
 				}
-
-
+				
+				
 				if(expSemOption){
 					//recompensaMapaAuxSemOption.clear();
 					recompensaMapaAuxSemOption.add(new ArrayList<Double>());
@@ -329,12 +329,15 @@ public class BasicBehavior<idx> {
 
 					//recompensaGeralSemOption.addAll(indice, recompensaMapaAuxComOption);
 				}
+				
 
+				
+
+
+				
 
 				controleMapa++;//controle de qual mapa está sendo explorado
 			}
-
-
 			if(expComOption){
 				salvaResultado(true,recompensaMapaAuxComOption);
 			}
@@ -686,19 +689,18 @@ public class BasicBehavior<idx> {
 				//qLearningExample4.createAgent();
 
 				//					recompensaEpisodio[controle]+= recompensa;
-				if(controle % 10 == 0){
-					if(comOptions){
-						recompensa = qLearningGreedy2Aval(outputPathx, agent, 1);
-						recompensaEpisodio.get(numMapa).add(recompensa);
-						indiceArrayListComOption++;
-					}
-					else{
-						//recompensa = qLearningExample2(outputPathx, agent, 1);
-						recompensa = qLearningGreedy2Aval(outputPathx, agent, 1);
-						recompensaEpisodio.get(numMapa).add(recompensa);
-						indiceArrayListSemOption++;
-					}
+				if(comOptions){
+					recompensa = qLearningGreedy2Aval(outputPathx, agent, 1);
+					recompensaEpisodio.get(numMapa).add(recompensa);
+					indiceArrayListComOption++;
 				}
+				else{
+					//recompensa = qLearningExample2(outputPathx, agent, 1);
+					recompensa = qLearningGreedy2Aval(outputPathx, agent, 1);
+					recompensaEpisodio.get(numMapa).add(recompensa);
+					indiceArrayListSemOption++;
+				}
+
 
 
 				//					controle+=execucoes;
@@ -717,7 +719,7 @@ public class BasicBehavior<idx> {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-		//System.out.println("\n Finish Map "+controleMapa);
+		System.out.println("\n Finish Map "+controleMapa);
 	}
 
 	//fim metodo
@@ -1631,7 +1633,7 @@ public class BasicBehavior<idx> {
 			agentState = new GridAgent2(x,y,"agent");
 		}
 
-//		System.out.println("Estado inicial do agente:("+x+","+y+")");
+		System.out.println("Estado inicial do agente:("+x+","+y+")");
 		visual++;
 		return agentState;
 	}

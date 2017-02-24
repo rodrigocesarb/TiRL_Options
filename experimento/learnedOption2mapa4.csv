@@ -1,1 +1,5 @@
 action,x,y
+east,7,3
+north,7,4
+west,8,1
+north,5,1
